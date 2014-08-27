@@ -367,6 +367,7 @@ class PersonPageRelatedLink(Orderable, RelatedLink):
 class PersonPage(Page, ContactFields):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
+    job_title = models.CharField(max_length=255)
     intro = RichTextField(blank=True)
     biography = RichTextField(blank=True)
     image = models.ForeignKey(
@@ -390,6 +391,7 @@ PersonPage.content_panels = [
     FieldPanel('title', classname="full title"),
     FieldPanel('first_name'),
     FieldPanel('last_name'),
+    FieldPanel('job_title'),
     FieldPanel('intro', classname="full"),
     FieldPanel('biography', classname="full"),
     ImageChooserPanel('image'),

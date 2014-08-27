@@ -1,15 +1,77 @@
 {% extends "demo/base.html" %}
-{% load demo_tags %}
+{% load demo_tags wagtailimages_tags static %}
 
+{% block hero_cover %}
+	{% image self.carousel_items.first.image width-2000 as heroimagedata %}
+    <div id="hero" class="row" style="background-image: url('{{ heroimagedata.url }}');">
+		<div class="hero-strip">
+			<div>
+				<div class="hero-cell hero-image-cell">
+					<img src="{% static 'demo/images/bsc-logo.svg' %}" />
+				</div>
+				<div class="hero-cell">
+					<h1>
+						We partner with
+						<div class="slide-words">
+							<span class="slide-word active">schools</span>
+							<span class="slide-word">nonprofits</span>
+							<span class="slide-word">businesses</span>
+							<span class="slide-word">agencies</span>
+						</div>
+						<br />
+						to make technology work<br />
+						for everyone.
+					</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
 
 {% block content %}
-    {% include "demo/includes/carousel.html" with carousel_items=self.carousel_items.all only %}
+    {# include "demo/includes/carousel.html" with carousel_items=self.carousel_items.all only #}
 
-    {% include "demo/includes/body.html" with body=self.body only %}
+    {# include "demo/includes/body.html" with body=self.body only #}
 
     {% person_listing_homepage %}
 
+    <div class="row">
     {% blog_listing_homepage %}
+    </div>
 
+    <div class="row">
     {% event_listing_homepage %}
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+	$('#hero').css('height',$(window).height());
+	$(window).resize(function() {
+		$('#hero').css('height',$(window).height());
+	});
+
+	slideshowTimer = setInterval( function() {
+		moveSlide();
+	}, 3000 );
+
+	function moveSlide() {
+		var active     = $('.slide-word.active');
+
+		if (active.next('.slide-word').length > 0) {
+			nextActive = active.next('.slide-word');
+		} else {
+			nextActive = $('.slide-word').first('.slide-word');
+		}
+
+		active.fadeOut('slow', function() {
+			nextActive.fadeIn('slow',function() {
+				active.removeClass('active');
+				nextActive.addClass('active');	
+			})
+		});
+	}
+});
+</script>
 {% endblock %}

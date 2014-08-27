@@ -1,21 +1,26 @@
 {% load pageurl image_tags %}
 {% if people %}
-    <div class="page-header"><h3>People</h3></div>
-    <div class="list-group people">
-        {% for person in people %}
-            <a class="list-group-item" href="{% pageurl person %}">
-                <h4 class="list-group-item-heading"> {{ person.first_name }} {{ person.last_name }}</h4>
-                {% if person.search_description or person.image %}
-                    <p class="list-group-item-text">
-                        {% if person.image %}
-                            {% image person.feed_image width-200 %}
-                        {% endif %}
-                        {% if person.search_description %}
-                            {{ person.search_description }}
-                        {% endif %}
-                    </p>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="page-header"><h3>Meet the Team</h3></div>
+            {% for person in people %}
+        <div class="person media">
+            <a class="pull-left" href="{% pageurl person %}">
+                {% if person.feed_image %}
+                    {% image person.feed_image fill-75x75 class="media-object img-circle" %}
+                {% elif person.image %}
+                    {% image person.image fill-75x75 class="media-object img-circle" %}
+                {% else %}
+                    <img class="media-object img-circle" src="http://robohash.org/{{ person.first_name }}.png?set=set3&size=75x75&bgset=2" />
                 {% endif %}
+                {# <img class="media-object" src="..." alt="..."> #}
             </a>
-        {% endfor %}
+            <div class="media-body">
+                <h4 class="media-heading">{{ person.first_name }} {{ person.last_name }}</h4>
+                <em>{{ person.job_title }}</em>
+            </div>
+        </div>
+            {% endfor %}
     </div>
+</div>
 {% endif %}

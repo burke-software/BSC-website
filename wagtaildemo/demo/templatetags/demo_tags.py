@@ -105,8 +105,8 @@ def standard_index_listing(context, calling_page):
     'demo/tags/person_listing_homepage.html',
     takes_context=True
 )
-def person_listing_homepage(context, count=2):
-    people = PersonPage.objects.filter(live=True).order_by('?')
+def person_listing_homepage(context, count=PersonPage.objects.count()):
+    people = PersonPage.objects.filter(live=True).order_by('last_name')
     return {
         'people': people[:count],
         # required by the pageurl tag that we want to use within this template

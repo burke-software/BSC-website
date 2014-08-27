@@ -59,17 +59,17 @@
             {% top_menu parent=site_root calling_page=self %}
         {% endblock %}
 
-        <div class="container theme-showcase">
-            <div class="jumbotron">
-                <h1>Wagtail Demo</h1>
-                <p>A set of demo templates to show you what Wagtail can do.</p>
-                {% block search_box %}
-                    {% include "demo/includes/search_box.html" only %}
-                {% endblock %}
-            </div>
+
+        <div class="container-fluid theme-showcase">
+            {% block hero_cover %}
+            {% endblock %}
+            
+            {% block search_box %}
+                {# include "demo/includes/search_box.html" only #}
+            {% endblock %}
 
             {% block heading %}
-                <div class="page-header">
+                <div class="row page-header">
                     <h2>{{ self.title }}</h2>
                 </div>
             {% endblock %}
