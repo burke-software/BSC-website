@@ -28,6 +28,8 @@
 	</div>
 {% endblock %}
 
+{% block heading %}{% endblock %}
+
 {% block content %}
     {# include "demo/includes/carousel.html" with carousel_items=self.carousel_items.all only #}
 
@@ -47,6 +49,7 @@
 {% block extra_js %}
 <script>
 $(document).ready(function() {
+
 	$('#hero').css('height',$(window).height());
 	$(window).resize(function() {
 		$('#hero').css('height',$(window).height());
@@ -72,6 +75,24 @@ $(document).ready(function() {
 			})
 		});
 	}
+
+	var scrollTop = $(this).scrollTop();
+	var heroHeight = $('#hero').height();
+	var heroStripHeight = $('.hero-strip').height();
+
+	if (scrollTop < heroHeight/2 + heroStripHeight/2) {
+		$('.navbar-brand').hide();
+	}
+	
+	$(document).scroll(function() {
+		scrollTop = $(this).scrollTop();
+		
+		if (scrollTop > heroHeight/2 + heroStripHeight/2) {
+			$('.navbar-brand').fadeIn();
+		} else {
+			$('.navbar-brand').fadeOut();
+		}
+	});
 });
 </script>
 {% endblock %}

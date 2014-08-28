@@ -3,24 +3,32 @@
 <div class="row">
     <div class="col-xs-12">
         <div class="page-header"><h3>Meet the Team</h3></div>
-            {% for person in people %}
-        <div class="person media">
-            <a class="pull-left" href="{% pageurl person %}">
-                {% if person.feed_image %}
-                    {% image person.feed_image fill-75x75 class="media-object img-circle" %}
-                {% elif person.image %}
-                    {% image person.image fill-75x75 class="media-object img-circle" %}
-                {% else %}
-                    <img class="media-object img-circle" src="http://robohash.org/{{ person.first_name }}.png?set=set3&size=75x75&bgset=2" />
-                {% endif %}
-                {# <img class="media-object" src="..." alt="..."> #}
-            </a>
-            <div class="media-body">
-                <h4 class="media-heading">{{ person.first_name }} {{ person.last_name }}</h4>
-                <em>{{ person.job_title }}</em>
+
+        <div class="row">
+        {% for person in people %}
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="media people">
+                    <a class="avatar pull-left" href="{% pageurl person %}">
+                        {% if person.feed_image %}
+                            {% image person.feed_image fill-200x200 class="media-object img-responsive img-circle" %}
+                        {% elif person.image %}
+                            {% image person.image fill-200x200 class="media-object img-responsive img-circle" %}
+                        {% else %}
+                            <img class="media-object img-responsive img-circle" src="http://robohash.org/{{ person.first_name }}.png?set=set3&size=200x200&bgset=2" />
+                        {% endif %}
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading">{{ person.first_name }}</h4>
+                        <em>{{ person.job_title }}</em>
+                    </div>
+                </div>
             </div>
-        </div>
+
+            {% if forloop.counter|divisibleby:3 %}
+                <div class="clearfix visible-md"></div>
+            {% endif %}
             {% endfor %}
+        </div>
     </div>
 </div>
 {% endif %}
