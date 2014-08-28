@@ -22,7 +22,7 @@ from modelcluster.tags import ClusterTaggableManager
 from taggit.models import Tag, TaggedItemBase
 from south.signals import post_migrate
 
-from demo.utils import export_event
+from .utils import export_event
 
 
 EVENT_AUDIENCE_CHOICES = (
@@ -132,7 +132,7 @@ class RelatedLink(LinkFields):
 
 class AdvertPlacement(models.Model):
     page = ParentalKey('wagtailcore.Page', related_name='advert_placements')
-    advert = models.ForeignKey('demo.Advert', related_name='+')
+    advert = models.ForeignKey('website.Advert', related_name='+')
 
 
 class Advert(models.Model):
@@ -160,11 +160,11 @@ register_snippet(Advert)
 # Home Page
 
 class HomePageCarouselItem(Orderable, CarouselItem):
-    page = ParentalKey('demo.HomePage', related_name='carousel_items')
+    page = ParentalKey('website.HomePage', related_name='carousel_items')
 
 
 class HomePageRelatedLink(Orderable, RelatedLink):
-    page = ParentalKey('demo.HomePage', related_name='related_links')
+    page = ParentalKey('website.HomePage', related_name='related_links')
 
 
 class HomePage(Page):
@@ -190,7 +190,7 @@ HomePage.promote_panels = [
 # Standard index page
 
 class StandardIndexPageRelatedLink(Orderable, RelatedLink):
-    page = ParentalKey('demo.StandardIndexPage', related_name='related_links')
+    page = ParentalKey('website.StandardIndexPage', related_name='related_links')
 
 
 class StandardIndexPage(Page):
@@ -220,11 +220,11 @@ StandardIndexPage.promote_panels = [
 # Standard page
 
 class StandardPageCarouselItem(Orderable, CarouselItem):
-    page = ParentalKey('demo.StandardPage', related_name='carousel_items')
+    page = ParentalKey('website.StandardPage', related_name='carousel_items')
 
 
 class StandardPageRelatedLink(Orderable, RelatedLink):
-    page = ParentalKey('demo.StandardPage', related_name='related_links')
+    page = ParentalKey('website.StandardPage', related_name='related_links')
 
 
 class StandardPage(Page):
@@ -257,7 +257,7 @@ StandardPage.promote_panels = [
 # Blog index page
 
 class BlogIndexPageRelatedLink(Orderable, RelatedLink):
-    page = ParentalKey('demo.BlogIndexPage', related_name='related_links')
+    page = ParentalKey('website.BlogIndexPage', related_name='related_links')
 
 
 class BlogIndexPage(Page):
@@ -313,15 +313,15 @@ BlogIndexPage.promote_panels = [
 # Blog page
 
 class BlogPageCarouselItem(Orderable, CarouselItem):
-    page = ParentalKey('demo.BlogPage', related_name='carousel_items')
+    page = ParentalKey('website.BlogPage', related_name='carousel_items')
 
 
 class BlogPageRelatedLink(Orderable, RelatedLink):
-    page = ParentalKey('demo.BlogPage', related_name='related_links')
+    page = ParentalKey('website.BlogPage', related_name='related_links')
 
 
 class BlogPageTag(TaggedItemBase):
-    content_object = ParentalKey('demo.BlogPage', related_name='tagged_items')
+    content_object = ParentalKey('website.BlogPage', related_name='tagged_items')
 
 
 class BlogPage(Page):
@@ -361,7 +361,7 @@ BlogPage.promote_panels = [
 # Person page
 
 class PersonPageRelatedLink(Orderable, RelatedLink):
-    page = ParentalKey('demo.PersonPage', related_name='related_links')
+    page = ParentalKey('website.PersonPage', related_name='related_links')
 
 
 class PersonPage(Page, ContactFields):
@@ -434,7 +434,7 @@ ContactPage.promote_panels = [
 # Event index page
 
 class EventIndexPageRelatedLink(Orderable, RelatedLink):
-    page = ParentalKey('demo.EventIndexPage', related_name='related_links')
+    page = ParentalKey('website.EventIndexPage', related_name='related_links')
 
 
 class EventIndexPage(Page):
@@ -470,15 +470,15 @@ EventIndexPage.promote_panels = [
 # Event page
 
 class EventPageCarouselItem(Orderable, CarouselItem):
-    page = ParentalKey('demo.EventPage', related_name='carousel_items')
+    page = ParentalKey('website.EventPage', related_name='carousel_items')
 
 
 class EventPageRelatedLink(Orderable, RelatedLink):
-    page = ParentalKey('demo.EventPage', related_name='related_links')
+    page = ParentalKey('website.EventPage', related_name='related_links')
 
 
 class EventPageSpeaker(Orderable, LinkFields):
-    page = ParentalKey('demo.EventPage', related_name='speakers')
+    page = ParentalKey('website.EventPage', related_name='speakers')
     first_name = models.CharField("Name", max_length=255, blank=True)
     last_name = models.CharField("Surname", max_length=255, blank=True)
     image = models.ForeignKey(
@@ -591,12 +591,12 @@ FormPage.content_panels = [
 ]
 
 
-# Signal handler to load demo data from fixtures after migrations have completed
+# Signal handler to load website data from fixtures after migrations have completed
 @receiver(post_migrate)
-def import_demo_data(sender, **kwargs):
+def import_website_data(sender, **kwargs):
     # post_migrate will be fired after every app is migrated; we only want to do the import
-    # after demo has been migrated
-    if kwargs['app'] != 'demo':
+    # after website has been migrated
+    if kwargs['app'] != 'website':
         return
 
     # Check that there isn't already meaningful data in the db that would be clobbered.
@@ -610,19 +610,3 @@ def import_demo_data(sender, **kwargs):
     for page in Page.objects.all():
         if page.specific_class != Page:
             return
-
-    import os, shutil
-    from django.conf import settings
-
-    fixtures_dir = os.path.join(settings.PROJECT_ROOT, 'demo', 'fixtures')
-    fixture_file = os.path.join(fixtures_dir, 'demo.json')
-    image_src_dir = os.path.join(fixtures_dir, 'images')
-    image_dest_dir = os.path.join(settings.MEDIA_ROOT, 'original_images')
-
-    call_command('loaddata', fixture_file, verbosity=0)
-
-    if not os.path.isdir(image_dest_dir):
-        os.makedirs(image_dest_dir)
-
-    for filename in os.listdir(image_src_dir):
-        shutil.copy(os.path.join(image_src_dir, filename), image_dest_dir)

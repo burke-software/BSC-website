@@ -20,12 +20,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': '',
-        'HOST': 'db_1',  # Set to empty string for localhost.
-        'PORT': '5432',  # Set to empty string for default.
-        'CONN_MAX_AGE': 600,  # number of seconds database connections should persist for
+        'NAME': 'docker',
+        'USER': 'docker',
+        'PASSWORD': 'docker',
+        'HOST': os.environ.get('DB_1_PORT_5432_TCP_ADDR'),
+        'PORT': os.environ.get('DB_1_PORT_5432_TCP_PORT'),
     }
 }
 
@@ -40,11 +39,11 @@ ALLOWED_HOSTS = []
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'Europe/London'
+TIME_ZONE = 'America/New_York'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-gb'
+LANGUAGE_CODE = 'en-us'
 
 SITE_ID = 1
 
@@ -128,10 +127,10 @@ TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     'django.core.context_processors.request',
 )
 
-ROOT_URLCONF = 'wagtaildemo.urls'
+ROOT_URLCONF = 'bsc_website.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'wagtaildemo.wsgi.application'
+WSGI_APPLICATION = 'bsc_website.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -166,10 +165,8 @@ INSTALLED_APPS = (
     'wagtail.wagtailredirects',
     'wagtail.wagtailforms',
 
-    'demo',
+    'website',
 )
-
-EMAIL_SUBJECT_PREFIX = '[wagtaildemo] '
 
 INTERNAL_IPS = ('127.0.0.1', '10.0.2.2')
 
@@ -214,7 +211,7 @@ LOGGING = {
 
 # WAGTAIL SETTINGS
 
-WAGTAIL_SITE_NAME = 'wagtaildemo'
+WAGTAIL_SITE_NAME = 'Burke Software and Consulting'
 
 # Override the search results template for wagtailsearch
 WAGTAILSEARCH_RESULTS_TEMPLATE = 'demo/search_results.html'

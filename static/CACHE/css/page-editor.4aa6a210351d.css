@@ -1,0 +1,381 @@
+/* paths */
+/* We can't use absolute paths here, because those are dependent on Django's
+STATIC_URL setting. However, django-compressor consistently places the compiled
+CSS into ${STATIC_URL}/CACHE/css/ regardless of compilation mode, so we can
+reliably use relative paths to get back to STATIC_URL. */
+/* grid settings */
+/* screen breakpoints */
+/* 800px */
+/* 900px */
+/* 1200px */
+/* 1600px */
+/* colours */
+/* darker to lighter */
+/* misc sizing */
+.visuallyhidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px; }
+  .visuallyhidden:active, .visuallyhidden:focus {
+    clip: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    width: auto; }
+
+.visuallyvisible {
+  clip: none;
+  height: auto;
+  width: auto;
+  margin: auto;
+  overflow: visible;
+  position: initial; }
+
+/* Utility variable - you should never need to modify this */
+/* Ensure grid columns are set to border-boxes. This is essential */
+/* Our row container */
+/* Our column container */
+/* Push adds left padding */
+/* Pull adds right padding */
+/* only used in places where padding not applied to same elements as row or row-flush
+ * most of the time this class should be applied directly to the html elements */
+.page-editor .content-wrapper {
+  margin-bottom: 10em; }
+
+.page-editor .breadcrumb {
+  margin-top: -1.2em;
+  margin-bottom: 2em; }
+
+.page-editor .modal .breadcrumb {
+  margin: 0;
+  background-color: transparent; }
+  .page-editor .modal .breadcrumb a {
+    color: #666666; }
+  .page-editor .modal .breadcrumb li:hover {
+    background-color: #e6e6e6; }
+  .page-editor .modal .breadcrumb .home {
+    padding-left: 0; }
+
+.object {
+  position: relative;
+  overflow: hidden;
+  padding-left: 20px;
+  padding-right: 20px;
+  /* Special full-width, one-off fields i.e a single text or textarea input */
+  /* special panel for the publishing fields, requires a bit more pizzazz */
+  /* removes top padding from multiples used within another panel */ }
+  @media screen and (min-width: 50em) {
+    .object {
+      padding-left: 50px;
+      padding-right: 50px; } }
+  .object:first-child {
+    border: 0; }
+  .object.focused {
+    border-color: #54d0d0; }
+  .object fieldset {
+    padding-top: 4em;
+    padding-left: 0;
+    padding-right: 0; }
+  .object .object-help {
+    display: block;
+    position: relative;
+    z-index: 1;
+    top: 1em;
+    padding-right: 1.5%;
+    margin-top: 4em;
+    opacity: 1;
+    padding-left: 3em; }
+    .object .object-help:before {
+      display: block;
+      float: left;
+      content: "?";
+      border: 1px solid #666666;
+      color: #666666;
+      -webkit-border-radius: 100%;
+      border-radius: 100%;
+      height: 15px;
+      width: 15px;
+      line-height: 15px;
+      text-align: center;
+      font-size: 1.1em;
+      margin-left: -2em;
+      margin-top: 0.3em; }
+  .object:hover .object-help {
+    opacity: 1; }
+  .object > h2, .object.single-field label {
+    -webkit-font-smoothing: auto;
+    background: #fcf2f2;
+    text-transform: uppercase;
+    padding: 0.9em 0 0.9em 4.1em;
+    font-size: 0.95em;
+    margin: 0 0 0.2em 0;
+    line-height: 1.5em;
+    font-weight: normal;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    overflow: hidden; }
+    .object > h2:before, .object.single-field label:before {
+      text-shadow: none;
+      font-family: wagtail;
+      text-transform: none;
+      content: "q";
+      text-align: center;
+      display: block;
+      position: absolute;
+      z-index: 2;
+      font-size: 2em;
+      top: 0px;
+      line-height: 1.8em;
+      left: 0px;
+      width: 1.7em;
+      color: white;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      background-color: #f37e77; }
+  .object .richtext {
+    padding-top: 1em;
+    /* to provide space for editor buttons */
+    padding-bottom: 1em; }
+    .object .richtext.inEditMode {
+      padding-top: 5em;
+      /* to provide space for editor buttons */
+      padding-bottom: 2em; }
+  .object.single-field h2, .object.single-field .object-help {
+    display: none;
+    /* The field label is used instead */ }
+  .object.full h2 {
+    display: none;
+    /* The field label is used instead */ }
+  .object.full .object-help {
+    display: block; }
+  .object.full fieldset {
+    display: block;
+    float: none; }
+    .object.full fieldset .help {
+      display: none; }
+  .object.full li {
+    padding: 0; }
+  .object.full input, .object.full textarea, .object.full .richtext {
+    padding-left: 20px;
+    padding-right: 20px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    font-family: Bitter, Georgia, serif;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    font-size: 1.2em;
+    line-height: 1.6em; }
+    @media screen and (min-width: 50em) {
+      .object.full input, .object.full textarea, .object.full .richtext {
+        padding-left: 50px;
+        padding-right: 50px; } }
+  .object.full .richtext {
+    padding-top: 3em;
+    /* to provide space for editor buttons */
+    padding-bottom: 3em; }
+    .object.full .richtext.inEditMode {
+      padding-top: 5em;
+      /* to provide space for editor buttons */
+      padding-bottom: 5em; }
+  .object.full .error-message {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 2em; }
+    @media screen and (min-width: 50em) {
+      .object.full .error-message {
+        padding-left: 50px;
+        padding-right: 50px; } }
+  .object.full .error, .object.full .error input, .object.full .error textarea, .object.full .error .richtext {
+    background-color: #feedee; }
+  .object.publishing h2:before {
+    content: "7";
+    font-size: 2.4em;
+    line-height: 1.4em;
+    width: 1.4em; }
+  .object.title input, .object.title textarea {
+    font-size: 2em;
+    padding-top: 2em; }
+  .object.title input {
+    padding-top: 1.5em;
+    padding-bottom: 1.5em; }
+  .object .multiple {
+    padding: 4.5em 0 0 0; }
+    .object .multiple fieldset {
+      padding-top: 0;
+      padding-bottom: 0; }
+  .object .fields {
+    max-width: 100%; }
+  .object .fields .multiple {
+    padding-top: 0; }
+  .object .add {
+    padding-top: 1em; }
+  .object.empty {
+    border-bottom: 1px solid white;
+    /* wrapper around add button for mutliple objects. Default version is wordless plus button for contracted groups of fields */ }
+    .object.empty > h2, .object.empty.single-field label {
+      margin: 0 0;
+      border-bottom: 1px solid white; }
+    .object.empty .add {
+      position: relative;
+      z-index: 2;
+      top: 0px;
+      left: 0px;
+      width: 3.3em;
+      padding: 0;
+      margin: 0 0 0 -20px;
+      cursor: pointer; }
+      body.ready .object.empty .add {
+        -webkit-transition: background-color 0.2s ease;
+        -moz-transition: background-color 0.2s ease;
+        -o-transition: background-color 0.2s ease;
+        transition: background-color 0.2s ease; }
+      .object.empty .add .button {
+        -webkit-border-radius: 0;
+        border-radius: 0;
+        overflow: visible;
+        display: inline-block;
+        padding: 0;
+        width: 3.45em;
+        background-color: #f37e77; }
+        .object.empty .add .button:before {
+          position: relative;
+          padding: 0;
+          line-height: 1.8em;
+          /* specific height required as parent 'a' has no height */
+          font-size: 1.4rem;
+          width: 100%;
+          background-color: transparent; }
+    .object.empty .multiple {
+      padding: 0; }
+  .object.collapsible {
+    /* li.collapsed gets its height from the fieldset only, which is now hidden
+        and h2 has position:absolute which doesn't add to it either, so it would be 0 without this */
+    min-height: 41px; }
+    .object.collapsible h2 {
+      cursor: pointer; }
+    .object.collapsible h2:before {
+      content: '6';
+      text-shadow: none;
+      line-height: 40px;
+      padding-right: 1px;
+      opacity: 1;
+      color: #666;
+      background-color: transparent; }
+      body.ready .object.collapsible h2:before {
+        -webkit-transition: background-color 0.2s ease, color 0.2s ease;
+        -moz-transition: background-color 0.2s ease, color 0.2s ease;
+        -o-transition: background-color 0.2s ease, color 0.2s ease;
+        transition: background-color 0.2s ease, color 0.2s ease; }
+    .object.collapsible.collapsed {
+      background: #fff; }
+      .object.collapsible.collapsed h2 {
+        -webkit-box-shadow: none;
+        box-shadow: none; }
+      .object.collapsible.collapsed h2:before {
+        content: '5';
+        color: #fff;
+        background-color: #43b1b0; }
+      .object.collapsible.collapsed h2:hover:before {
+        background-color: #358c8b; }
+
+footer .preview button, footer .preview .button {
+  background-color: #808080;
+  border-color: #808080; }
+  footer .preview button:hover, footer .preview .button:hover {
+    background-color: #666666;
+    border-color: #666666; }
+footer .preview .dropdown input[type=button], footer .preview .dropdown input[type=submit], footer .preview .dropdown button, footer .preview .dropdown .button {
+  background-color: #808080;
+  border-color: #808080; }
+  footer .preview .dropdown input[type=button]:hover, footer .preview .dropdown input[type=submit]:hover, footer .preview .dropdown button:hover, footer .preview .dropdown .button:hover {
+    background-color: #666666;
+    border-color: #666666; }
+footer .preview .dropdown ul, footer .preview .dropdown .dropdown-toggle {
+  background-color: #808080; }
+footer .preview .dropdown .dropdown-toggle:hover, footer .preview .dropdown.open > .button + .dropdown-toggle {
+  background-color: #666666; }
+
+@media screen and (min-width: 50em) {
+  .page-editor .breadcrumb {
+    margin-top: -1.8em; }
+  .object fieldset {
+    max-width: 1024px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: inline;
+    float: left;
+    width: 83.33333%;
+    padding-right: 1.5%;
+    padding-left: 1.5%;
+    padding-left: 0;
+    padding-right: 0; }
+    .object fieldset fieldset {
+      width: 100%; }
+  .object .object-help {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: inline;
+    float: left;
+    width: 16.66667%;
+    padding-right: 1.5%;
+    padding-left: 1.5%;
+    display: block;
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    top: 1em;
+    padding-right: 1.5%;
+    float: right;
+    margin-top: 4em;
+    opacity: 0;
+    padding-left: 3em; }
+  .object.full fieldset {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: inline;
+    float: left;
+    width: 91.66667%;
+    padding-right: 1.5%;
+    padding-left: 1.5%;
+    margin-left: -51px;
+    padding: 3.2em 0 0 0; }
+  .object.full input, .object.full textarea, .object.full .richtext {
+    border-width: 0 1px; }
+  .object.full .field {
+    padding: 0; }
+  .object.full .field-content {
+    display: block;
+    float: none;
+    width: auto;
+    padding: inherit; }
+  .object .multiple {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: inline;
+    float: left;
+    width: 83.33333%;
+    padding-right: 1.5%;
+    padding-left: 1.5%;
+    padding-left: 0;
+    padding-right: 0; }
+  .object.empty .add {
+    margin: 0 0 0 -50px; }
+  .object.single-field label {
+    display: block;
+    float: none;
+    width: auto;
+    padding: auto; } }
