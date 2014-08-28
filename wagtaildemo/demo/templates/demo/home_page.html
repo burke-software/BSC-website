@@ -3,9 +3,9 @@
 
 {% block hero_cover %}
 	{% image self.carousel_items.first.image width-2000 as heroimagedata %}
-    <div id="hero" class="row" style="background-image: url('{{ heroimagedata.url }}');">
+    <div id="hero" style="background-image: url('{{ heroimagedata.url }}');">
 		<div class="hero-strip">
-			<div>
+			<div><div>
 				<div class="hero-cell hero-image-cell">
 					<img src="{% static 'demo/images/bsc-logo.svg' %}" />
 				</div>
@@ -23,7 +23,7 @@
 						for everyone.
 					</h1>
 				</div>
-			</div>
+			</div></div>
 		</div>
 	</div>
 {% endblock %}
