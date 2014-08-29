@@ -1,11 +1,11 @@
-{% extends "demo/base.html" %}
+{% extends "website/base.html" %}
 
-{% load demo_tags %}
+{% load website_tags %}
 
 {% block content %}
-    {% include "demo/includes/body.html" with body=self.body only %}
+    {% include "website/includes/body.html" with body=self.body only %}
 
-    {% include "demo/includes/contact.html" with contact=self only %}
+    {% include "website/includes/contact.html" with contact=self only %}
 
     {%  if self.post_code %}
     	

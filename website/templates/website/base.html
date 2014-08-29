@@ -1,4 +1,4 @@
-{% load demo_tags cache compress static wagtailuserbar %}
+{% load website_tags cache compress static wagtailuserbar %}
 
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -19,11 +19,11 @@
         {# Local static assets such as css, images and javascrpt should be stored at [yourapp]/static/[yourapp]/... #}
         {% compress css %}
             {# Vendor stylesheets stored locally #}
-            <link rel="stylesheet" href="{% static "demo/css/vendor/jquery.bxslider.css" %}" />
+            <link rel="stylesheet" href="{% static "website/css/vendor/jquery.bxslider.css" %}" />
 
             {# Custom stylesheets #}
             {# SCSS compilation relies on django compressor #}
-            <link rel="stylesheet" type="text/x-scss" href="{% static "demo/css/main.scss" %}" />
+            <link rel="stylesheet" type="text/x-scss" href="{% static "website/css/main.scss" %}" />
 
         {% endcompress %}
 
@@ -65,7 +65,7 @@
         <div class="container theme-showcase">
             
             {% block search_box %}
-                {# include "demo/includes/search_box.html" only #}
+                {# include "website/includes/search_box.html" only #}
             {% endblock %}
 
             {% block heading %}
@@ -94,11 +94,11 @@
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 
         {% compress js %}
-            <script src="{% static "demo/js/vendor/jquery.bxslider.min.js" %}"></script>
-            <script src="{% static "demo/js/vendor/fluidvids.js" %}"></script>
+            <script src="{% static "website/js/vendor/jquery.bxslider.min.js" %}"></script>
+            <script src="{% static "website/js/vendor/fluidvids.js" %}"></script>
             {# Custom javascript #}
             {# Local static assets such as css, images and javascrpt should be stored at [yourapp]/static/[yourapp]/... #}
-            <script src="{% static "demo/js/main.js" %}"></script>
+            <script src="{% static "website/js/main.js" %}"></script>
         {% endcompress %}
 
         {% block extra_js %}{% endblock %} {# Override this block in individual templates in order to add javascript on a template by template basis #}

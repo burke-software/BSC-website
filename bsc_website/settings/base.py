@@ -214,4 +214,4 @@ LOGGING = {
 WAGTAIL_SITE_NAME = 'Burke Software and Consulting'
 
 # Override the search results template for wagtailsearch
-WAGTAILSEARCH_RESULTS_TEMPLATE = 'demo/search_results.html'
+WAGTAILSEARCH_RESULTS_TEMPLATE = 'website/search_results.html'

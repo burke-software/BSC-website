@@ -1,5 +1,5 @@
-{% extends "demo/base.html" %}
-{% load demo_tags wagtailimages_tags static %}
+{% extends "website/base.html" %}
+{% load website_tags wagtailimages_tags static %}
 
 {% block hero_cover %}
 	{% image self.carousel_items.first.image width-2000 as heroimagedata %}
@@ -7,7 +7,7 @@
 		<div class="hero-strip">
 			<div><div>
 				<div class="hero-cell hero-image-cell">
-					<img src="{% static 'demo/images/bsc-logo.svg' %}" />
+					<img src="{% static 'website/images/bsc-logo.svg' %}" />
 				</div>
 				<div class="hero-cell">
 					<h1>
@@ -31,9 +31,9 @@
 {% block heading %}{% endblock %}
 
 {% block content %}
-    {# include "demo/includes/carousel.html" with carousel_items=self.carousel_items.all only #}
+    {# include "website/includes/carousel.html" with carousel_items=self.carousel_items.all only #}
 
-    {# include "demo/includes/body.html" with body=self.body only #}
+    {# include "website/includes/body.html" with body=self.body only #}
 
     {% person_listing_homepage %}
 

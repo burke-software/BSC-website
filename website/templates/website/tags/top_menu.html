@@ -1,4 +1,4 @@
-{% load demo_tags pageurl static %}
+{% load website_tags pageurl static %}
 {% get_site_root as site_root %}
 
 {# Implementation of bootstrap theme dropdown menu - shows top level links and their children #}
@@ -12,7 +12,7 @@
                 <span class="icon-bar"></span>
             </button>
             {# Link to home page #}
-            <a href="{% pageurl site_root %}" class="navbar-brand"><img src="{% static 'demo/images/bsc-logo.svg' %}" alt="{{ site_root.title }}" /></a>
+            <a href="{% pageurl site_root %}" class="navbar-brand"><img src="{% static 'website/images/bsc-logo.svg' %}" alt="{{ site_root.title }}" /></a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
