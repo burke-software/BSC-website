@@ -87,7 +87,12 @@
                 {% adverts %}
             {% endblock %}
 
+
         </div>
+
+        {% block footer %}
+            {% include "website/includes/footer.html" %}
+        {% endblock %}
 
         {# External javascript #}
         <script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
