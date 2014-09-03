@@ -1,4 +1,4 @@
-{% load pageurl image_tags %}
+{% load wagtailcore_tags image_tags %}
 {% if people %}
 <div class="row">
     <div class="col-xs-12">
@@ -8,7 +8,7 @@
         {% for person in people %}
             <div class="col-xs-12 col-sm-6 col-md-4">
                 <div class="media people">
-                    <a class="avatar pull-left" href="{% pageurl person %}">
+                    <a class="avatar pull-left" href="{% slugurl 'meet-the-team' %}#{{ person.first_name }}">
                         {% if person.feed_image %}
                             {% image person.feed_image fill-200x200 class="media-object img-responsive img-circle" %}
                         {% elif person.image %}

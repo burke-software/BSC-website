@@ -1,0 +1,25 @@
+{% extends "website/base.html" %}
+{% load pageurl wagtailimages_tags website_tags static %}
+
+{% block hero_cover %}
+	{% image self.feed_image width-2000 as heroimagedata %}
+    <div class="content-header" style="background-image: url('{{ heroimagedata.url }}');">
+    	<div class="container">
+	    	<div>
+		        <h2>{{ self.title }}</h2>
+	        </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    {% include "website/includes/intro.html" with intro=self.intro only %}
+
+    {# Listing created with a tag - allows filtering by whether the page is live #}
+    {# See also the blog index or events index where the listing is created from a method defined in models.py #}
+    {% for person in people %}
+	    {% include "website/includes/person_list_item.html" %}
+	{% empty %}
+	    No people found
+	{% endfor %}
+{% endblock %}

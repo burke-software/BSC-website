@@ -182,3 +182,50 @@ h3 {
 		margin-right: 20px;
 	}
 }
+
+
+.content-header {
+	background-color: transparent;
+	background-position: center center;
+	background-size: cover;
+	margin-bottom: 30px;
+
+	.container {
+		display: table;
+
+		> div {
+			display: table-cell;
+			vertical-align: bottom;
+			height: 300px;
+			width: 1200px;
+		}
+
+		h2 {
+			background-color: #07f;
+			color: #fff;
+			display: inline-block;
+			padding: 7px;
+			margin-bottom: 30px;
+			font-size: 36px;
+		}
+	}
+}
+
+.person-list-item {
+	margin-bottom: 50px;
+
+	> .pull-left {
+	    margin-right: 30px;
+	}
+
+	h4 {
+		margin: 0px 0px 15px;
+		font-size: 28px;
+	}
+
+	p {
+		margin: 0px 0px 10px;
+		font-size: 16px;
+		line-height: 26px;
+	}
+}

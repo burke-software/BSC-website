@@ -1,5 +1,15 @@
 {% extends "website/base.html" %}
-{% load pageurl website_tags %}
+{% load pageurl website_tags static %}
+
+{% block hero_cover %}
+    <div class="content-header" style="background-image: url('{% static 'website/images/sample-content-header-3.png' %}'); background-color: transparent; background-position: center center; background-size: cover; ">
+    	<div class="container" style="display: table;">
+	    	<div style="display: table-cell; vertical-align: bottom; height: 300px; width: 1200px;">
+		        <h2 style="background-color: #07f; color: #fff; display: inline-block; padding: 7px; margin-bottom: 30px; font-size: 36px;">{{ self.title }}</h2>
+	        </div>
+        </div>
+    </div>
+{% endblock %}
 
 {% block content %}
     {% include "website/includes/intro.html" with intro=self.intro only %}

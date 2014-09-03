@@ -358,6 +358,55 @@ BlogPage.promote_panels = [
 ]
 
 
+# Person index page
+
+class PersonIndexPageRelatedLink(Orderable, RelatedLink):
+    page = ParentalKey('website.PersonIndexPage', related_name='related_links')
+
+
+class PersonIndexPage(Page):
+    intro = RichTextField(blank=True)
+    feed_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+
+    indexed_fields = ('intro', )
+
+    @property
+    def people(self):
+        # Get list of live blog pages that are descendants of this page
+        people = PersonPage.objects.live().descendant_of(self)
+
+        # Order by most recent date first
+        people = people.order_by('first_name')
+
+        return people
+
+    def get_context(self, request):
+        # Get people
+        people = self.people
+
+        # Update template context
+        context = super(PersonIndexPage, self).get_context(request)
+        context['people'] = people
+        return context
+
+PersonIndexPage.content_panels = [
+    FieldPanel('title', classname="full title"),
+    FieldPanel('intro', classname="full"),
+    InlinePanel(StandardIndexPage, 'related_links', label="Related links"),
+]
+
+PersonIndexPage.promote_panels = [
+    MultiFieldPanel(Page.promote_panels, "Common page configuration"),
+    ImageChooserPanel('feed_image'),
+]
+
+
 # Person page
 
 class PersonPageRelatedLink(Orderable, RelatedLink):
