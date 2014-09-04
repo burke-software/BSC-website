@@ -1,0 +1,27 @@
+{% extends "website/base.html" %}
+{% load image_tags %}
+
+{% block hero_cover %}
+    {% image self.product_index.header_image width-2000 as heroimagedata %}
+    <div class="content-header" style="background-image: url('{{ heroimagedata.url }}');">
+        <div class="container">
+            <div>
+                <h2>{{ self.product_index }}</h2>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    {% include "website/includes/carousel.html" with carousel_items=self.carousel_items.all only %}
+
+    {% include "website/includes/intro.html" with intro=self.intro only %}
+
+    {% if self.image %}
+        {# Person image - first store image as a variable in order to construct an image tag with a class applied #}
+        {% image self.image width-300 as photo %}
+        <img src="{{ photo.url }}" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}" class="img-thumbnail" />
+    {% endif %}
+
+    {% include "website/includes/related_links.html" with related_links=self.related_links.all only %}
+{% endblock %}

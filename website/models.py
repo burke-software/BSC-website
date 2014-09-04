@@ -454,6 +454,112 @@ PersonPage.promote_panels = [
 ]
 
 
+# Product index page
+
+class ProductIndexPageRelatedLink(Orderable, RelatedLink):
+    page = ParentalKey('website.ProductIndexPage', related_name='related_links')
+
+
+class ProductIndexPage(Page):
+    body = RichTextField(blank=True)
+    header_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    feed_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+
+    indexed_fields = ('body', )
+
+    @property
+    def products(self):
+        # Get list of live blog pages that are descendants of this page
+        products = ProductPage.objects.live().descendant_of(self)
+
+        # Order by most recent date first
+        products = products.order_by('order')
+
+        return products
+
+    def get_context(self, request):
+        # Get products
+        products = self.products
+
+        # Update template context
+        context = super(ProductIndexPage, self).get_context(request)
+        context['products'] = products
+        return context
+
+ProductIndexPage.content_panels = [
+    FieldPanel('title', classname="full title"),
+    FieldPanel('body', classname="full"),
+    InlinePanel(StandardIndexPage, 'related_links', label="Related links"),
+    ImageChooserPanel('header_image'),
+]
+
+ProductIndexPage.promote_panels = [
+    MultiFieldPanel(Page.promote_panels, "Common page configuration"),
+    ImageChooserPanel('feed_image'),
+]
+
+
+# Product page
+
+class ProductPageCarouselItem(Orderable, CarouselItem):
+    page = ParentalKey('website.ProductPage', related_name='carousel_items')
+
+class ProductPageRelatedLink(Orderable, RelatedLink):
+    page = ParentalKey('website.ProductPage', related_name='related_links')
+
+
+class ProductPage(Page):
+    intro = RichTextField(blank=True)
+    order = models.CharField("Order", max_length=255, blank=True)
+    logo = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    feed_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+
+    indexed_fields = ('intro', )
+
+    @property
+    def product_index(self):
+        # Find closest ancestor which is a product index
+        return self.get_ancestors().type(ProductIndexPage).last()
+
+ProductPage.content_panels = [
+    FieldPanel('title', classname="full title"),
+    FieldPanel('intro', classname="full"),
+    FieldPanel('order'),
+    ImageChooserPanel('logo'),
+    InlinePanel(ProductPage, 'carousel_items', label="Screenshots"),
+    InlinePanel(ProductPage, 'related_links', label="Related links"),
+]
+
+ProductPage.promote_panels = [
+    MultiFieldPanel(Page.promote_panels, "Common page configuration"),
+    ImageChooserPanel('feed_image'),
+]
+
+
 # Contact page
 
 class ContactPage(Page, ContactFields):
