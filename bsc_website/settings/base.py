@@ -20,11 +20,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'docker',
-        'USER': 'docker',
-        'PASSWORD': 'docker',
-        'HOST': os.environ.get('DB_1_PORT_5432_TCP_ADDR'),
-        'PORT': os.environ.get('DB_1_PORT_5432_TCP_PORT'),
+        'NAME': os.getenv('DATABASE_NAME', 'postgres'),
+        'USER': os.getenv('DATABASE_USER', 'postgres'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': os.getenv('DATABASE_ADDR', 'db_1'),
+        'PORT': 5432,
     }
 }
 
