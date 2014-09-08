@@ -243,11 +243,45 @@ h3 {
 
 /* Footer */
 footer#main-footer {
-	height: 400px;
+	min-height: 200px;
 	width: 100%;
 	position: relative;
 	background-color: transparent;
 	background-position: center center;
 	background-size: cover;
 	// display: table;
+
+	.row > div {
+		margin-top: 30px;
+		margin-bottom: 30px;
+	}
+
+	h3, h4 {
+		padding: 5px;
+		color: #ffffff;
+		display: inline-block;
+	}
+
+	a.colored, a.grayscale {
+		padding: 3px 5px;
+		color: #ffffff;
+		display: inline-block;
+		margin: 0 0 5px;
+	}
+
+	a.colored {
+		background-color: #0071BC;
+		font-size: 1.5em;
+	}
+
+	a.grayscale {
+		background-color: #8a8a8a;
+		font-size: 1.25em;
+	}
+}
+
+.footer-brand img {
+	width: 150px;
+	display: block;
+	margin: 0 0 20px;
 }
