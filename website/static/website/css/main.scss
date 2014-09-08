@@ -89,7 +89,7 @@ a.list-group-item {
 
 
 /* Hero */
-#hero {
+#hero, {
 	height: 600px;
 	width: 100%;
 	position: relative;
@@ -191,27 +191,38 @@ h3 {
 	margin-bottom: 30px;
 
 	.container {
-		display: table;
+		min-height: 300px;
 
 		> div {
-			display: table-cell;
-			vertical-align: bottom;
-			height: 300px;
-			width: 1200px;
+			margin-top: 175px;
 		}
 
-		h2 {
-			background-color: #07f;
+		h2, p {
 			color: #fff;
 			display: inline-block;
 			padding: 7px;
 			margin-bottom: 30px;
+		}
+
+		h2 {
+			background-color: #07f;
 			font-size: 36px;
+			margin-top: 80px;
+
+			&.has-intro-text {
+				margin-top: 20px;
+				margin-bottom: 10px;
+			}
+		}
+
+		p {
+			background-color: #4af;
+			font-size: 24px;
 		}
 	}
 }
 
-.person-list-item {
+.person-list-item, .product-list-item {
 	margin-bottom: 50px;
 
 	> .pull-left {
@@ -228,4 +239,15 @@ h3 {
 		font-size: 16px;
 		line-height: 26px;
 	}
+}
+
+/* Footer */
+footer#main-footer {
+	height: 400px;
+	width: 100%;
+	position: relative;
+	background-color: transparent;
+	background-position: center center;
+	background-size: cover;
+	// display: table;
 }

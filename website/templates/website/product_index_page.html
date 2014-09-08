@@ -1,24 +1,50 @@
 {% extends "website/base.html" %}
-{% load pageurl wagtailimages_tags website_tags static %}
+{% load pageurl wagtailimages_tags website_tags embed_filters static %}
 
 {% block hero_cover %}
 	{% image self.header_image width-2000 as heroimagedata %}
     <div class="content-header" style="background-image: url('{{ heroimagedata.url }}');">
     	<div class="container">
 	    	<div>
-		        <h2>{{ self.title }}</h2>
+		        <h2{% if self.body %} class="has-intro-text"{% endif %}>{{ self.title }}</h2><br />
+		        {% if self.body %}
+		        <p>{{ self.body|safe }}</p>
+		        {% endif %}
 	        </div>
         </div>
     </div>
 {% endblock %}
 
 {% block content %}
-    {{ self.body|safe }}
-
     {# Listing created with a tag - allows filtering by whether the page is live #}
     {# See also the blog index or events index where the listing is created from a method defined in models.py #}
     {% for product in products %}
-	    {{ product.title }}
+    <div class="product-list-item">
+	    <a href="{% pageurl product %}"><h4>{{ product.title }}</h4></a>
+	    <p>{{ product.intro|safe }}</p>
+
+	    <div class="row">
+		    {% for screenshot in product.carousel_items.all %}
+            {% image screenshot.image width-600 as screenshot_data %}
+	        <div class="col-md-4">
+		        <div class="image">
+		            <a href="{{ screenshot_data.url }}">
+		                {% if screenshot.embed_url %}
+		                    {# Embedded video - requires an embedly key to be stored in wagtailwebsite/settings/local.py #}
+		                    {{ screenshot.embed_url|embed:1000 }}
+		                {% else %}
+		                    {# Carousel image - first store image as a variable in order to construct an image tag with a title applied (title is used by bxslider js to construct the caption) #}
+		                    <img class="img-responsive" src="{{ screenshot_data.url }}" width="{{ screenshot_data.width }}" height="{{ screenshot_data.height }}" alt="{{ screenshot_data.alt }}" title="{{ screenshot.caption }}" />
+							<div class="caption">
+								<p>{{ screenshot.caption }}</p>
+							</div>
+		                {% endif %}
+		            </a>
+		        </div>
+	        </div>
+	        {% endfor %}
+	    </div>
+    </div>
 	{% empty %}
 	    No products found
 	{% endfor %}
