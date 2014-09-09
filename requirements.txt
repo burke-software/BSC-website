@@ -11,3 +11,5 @@ redis==2.9.1
 django-redis-cache==0.10.2
 elasticsearch==1.0.0
 gunicorn
+Collectfast
+django-storages
