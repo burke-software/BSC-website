@@ -13,4 +13,4 @@ elasticsearch==1.0.0
 gunicorn
 Collectfast
 django-storages
-python-boto
+boto
