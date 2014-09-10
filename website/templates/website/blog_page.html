@@ -1,19 +1,30 @@
 {% extends "website/base.html" %}
-{% load pageurl %}
+{% load pageurl wagtailimages_tags website_tags rich_text static %}
 
-
-{% if self.date %}
-    {% block heading %}
-        <div class="page-header">
-            <h2>{{ self.title }} {{ self.date|date:"j F Y" }}</h2>
+{% block hero_cover %}
+    {% image self.get_blog_index.header_image width-2000 as heroimagedata %}
+    <div class="content-header" style="background-image: url('{{ heroimagedata.url }}');">
+        <div class="container">
+            <div>
+                <h2><a href="{% pageurl self.blog_index %}">{{ self.blog_index.title }}</a></h2><br />
+            </div>
         </div>
-    {% endblock %}
-{% endif %}
+    </div>
+{% endblock %}
+
+{% block heading %}
+    <h2 class="blog-page-title">{{ self.title }}</h2>
+    <div class="blog-page-meta">{{ self.date|date:"F j, Y" }} {% if self.owner.first_name %} by {{ self.owner.first_name }}{% endif %}</div>
+{% endblock %}
 
 {% block content %}
     {% include "website/includes/carousel.html" with carousel_items=self.carousel_items.all only %}
 
-    {% include "website/includes/body.html" with body=self.body only %}
+    {% if self.body %}
+        <div class="blog-page-body">
+          {{ self.body|richtext }}
+        </div>
+    {% endif %}
 
     {% with self.tags.all as tags %}
         {% if tags %}

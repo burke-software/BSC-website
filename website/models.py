@@ -262,6 +262,13 @@ class BlogIndexPageRelatedLink(Orderable, RelatedLink):
 
 class BlogIndexPage(Page):
     intro = RichTextField(blank=True)
+    header_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
 
     indexed_fields = ('intro', )
 
@@ -302,6 +309,7 @@ class BlogIndexPage(Page):
 BlogIndexPage.content_panels = [
     FieldPanel('title', classname="full title"),
     FieldPanel('intro', classname="full"),
+    ImageChooserPanel('header_image'),
     InlinePanel(BlogIndexPage, 'related_links', label="Related links"),
 ]
 
@@ -328,6 +336,13 @@ class BlogPage(Page):
     body = RichTextField()
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
     date = models.DateField("Post date")
+    header_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
     feed_image = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
@@ -343,10 +358,19 @@ class BlogPage(Page):
         # Find closest ancestor which is a blog index
         return self.get_ancestors().type(BlogIndexPage).last()
 
+    def get_blog_index(self):
+        blog_index_page = None
+        for index_page in BlogIndexPage.objects.all():
+            if self in index_page.blogs:
+                blog_index_page = index_page
+                return blog_index_page
+        return blog_index_page
+
 BlogPage.content_panels = [
     FieldPanel('title', classname="full title"),
     FieldPanel('date'),
     FieldPanel('body', classname="full"),
+    ImageChooserPanel('header_image'),
     InlinePanel(BlogPage, 'carousel_items', label="Carousel items"),
     InlinePanel(BlogPage, 'related_links', label="Related links"),
 ]

@@ -1,8 +1,13 @@
 {% if blogs %}
-    <div class="page-header"><h3>Recent blog posts</h3></div>
-    <div class="list-group">
-        {% for blog in blogs %}
-            {% include "website/includes/blog_list_item.html" %}
-        {% endfor %}
+{% load wagtailcore_tags image_tags %}
+<div class="row">
+    <div class="col-xs-12">
+	    <div class="page-header"><h3>Burke Software Blog</h3></div>
+	    <div class="row">
+	        {% for blog in blogs %}
+	            {% include "website/includes/blog_list_item.html" %}
+	        {% endfor %}
+	    </div>
     </div>
+</div>
 {% endif %}

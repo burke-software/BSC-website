@@ -105,7 +105,7 @@ def standard_index_listing(context, calling_page):
     'website/tags/person_listing_homepage.html',
     takes_context=True
 )
-def person_listing_homepage(context, count=PersonPage.objects.count()):
+def person_listing_homepage(context, count=20):
     people = PersonPage.objects.filter(live=True).order_by('first_name')
     return {
         'people': people[:count],
@@ -119,7 +119,7 @@ def person_listing_homepage(context, count=PersonPage.objects.count()):
     'website/tags/blog_listing_homepage.html',
     takes_context=True
 )
-def blog_listing_homepage(context, count=2):
+def blog_listing_homepage(context, count=3):
     blogs = BlogPage.objects.filter(live=True).order_by('-date')
     return {
         'blogs': blogs[:count],

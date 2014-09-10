@@ -1,19 +1,57 @@
 {% extends "website/base.html" %}
+{% load pageurl wagtailimages_tags website_tags static %}
 
-{% load pageurl %}
+{% block hero_cover %}
+    {% image self.header_image width-2000 as heroimagedata %}
+    <div class="content-header" style="background-image: url('{{ heroimagedata.url }}');">
+        <div class="container">
+            <div>
+                <h2{% if self.intro %} class="has-intro-text"{% endif %}>{{ self.title }}</h2><br />
+                {% if self.intro %}
+                <p>{{ self.intro|safe }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
 
 {% block content %}
-    {% include "website/includes/intro.html" with intro=self.intro only %}
 
     {% if request.GET.tag|length %}
         <h4>Showing posts tagged as {{ request.GET.tag|safe }} <a href=" {% pageurl self %} ">Show all</a></h4>
     {% endif %}
 
-    <div class="list-group">
+    <div class="row">
         {# Uses serve method defined in models.py - allows for paging if required #}
         {# See also standard index for creating a listing with a tag #}
         {% for blog in blogs %}
-            {% include "website/includes/blog_list_item.html" %}
+        {% if forloop.counter == 1 %}
+        <div class="col-xs-12 blog-index-latest-item">
+        {% else %}
+        <div class="col-lg-3 col-md-6 blog-index-list-item">
+        {% endif %}
+            <h4>
+                <a href="{% pageurl blog %}">{{ blog.title }}</a>
+            </h4>
+            <div class="meta">
+                {{ blog.date|date:"F j, Y" }} 
+                {% if blog.owner.first_name %} &nbsp;//&nbsp; {{ blog.owner.first_name }}{% endif %}
+            </div>
+            <p>
+                {% if blog.search_description %}
+                    {{ blog.search_description }}
+                {% else %}
+                    {{ blog.body|striptags|truncatewords:40 }}
+                {% endif %}
+            </p>
+        </div>
+        {% if not forloop.counter|divisibleby:2 %}
+            {% if forloop.counter == 1 %}
+            <div class="clearfix"></div>
+            {% else %}
+            <div class="clearfix visible-md"></div>
+            {% endif %}
+        {% endif %}
         {% empty %}
             No blogs found
         {% endfor %}
