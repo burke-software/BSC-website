@@ -2,7 +2,11 @@
 {% load pageurl wagtailimages_tags website_tags rich_text static %}
 
 {% block hero_cover %}
-    {% image self.get_blog_index.header_image width-2000 as heroimagedata %}
+    {% if self.header_image %}
+        {% image self.header_image width-2000 as heroimagedata %}
+    {% else %}
+        {% image self.get_blog_index.header_image width-2000 as heroimagedata %}
+    {% endif %}
     <div class="content-header" style="background-image: url('{{ heroimagedata.url }}');">
         <div class="container">
             <div>
