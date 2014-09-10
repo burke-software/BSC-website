@@ -28,6 +28,17 @@ DATABASES = {
     }
 }
 
+REDIS_ADDR = os.getenv('REDIS_1_PORT_6379_TCP_ADDR', os.getenv('REDIS_ADDR'))
+CACHES = {
+    'default': {
+        'BACKEND': 'redis_cache.cache.RedisCache',
+        'LOCATION': REDIS_ADDR + ':6379',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'redis_cache.client.DefaultClient',
+        }
+    }
+}
+
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = []
@@ -215,3 +226,16 @@ WAGTAIL_SITE_NAME = 'Burke Software and Consulting'
 
 # Override the search results template for wagtailsearch
 WAGTAILSEARCH_RESULTS_TEMPLATE = 'website/search_results.html'
+
+if os.getenv('USE_S3'):
+    INSTALLED_APPS += ('storages', 'collectfast')
+    AWS_PRELOAD_METADATA = True
+    AWS_QUERYSTRING_AUTH = False
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    COMPRESS_STORAGE = STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+    COMPRESS_URL = STATIC_URL = 'https://{}.s3.amazonaws.com/'.format(
+            AWS_STORAGE_BUCKET_NAME,
+        )
