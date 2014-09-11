@@ -114,6 +114,40 @@ class CarouselItem(LinkFields):
         abstract = True
 
 
+# Feature items
+
+class FeatureItem(LinkFields):
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    image_thumbnail = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    embed_url = models.URLField("Embed URL", blank=True)
+    short_caption = models.CharField(max_length=255, blank=True)
+    long_caption = RichTextField(blank=True)
+
+    panels = [
+        ImageChooserPanel('image'),
+        ImageChooserPanel('image_thumbnail'),
+        FieldPanel('short_caption'),
+        FieldPanel('long_caption'),
+        FieldPanel('embed_url'),
+        MultiFieldPanel(LinkFields.panels, "Link"),
+    ]
+
+    class Meta:
+        abstract = True
+
+
 # Related links
 
 class RelatedLink(LinkFields):
@@ -485,69 +519,8 @@ class ProductIndexPageRelatedLink(Orderable, RelatedLink):
 
 
 class ProductIndexPage(Page):
-    body = RichTextField(blank=True)
+    intro = models.CharField("Intro", max_length=255, blank=True)
     header_image = models.ForeignKey(
-        'wagtailimages.Image',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+'
-    )
-    feed_image = models.ForeignKey(
-        'wagtailimages.Image',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+'
-    )
-
-    indexed_fields = ('body', )
-
-    @property
-    def products(self):
-        # Get list of live blog pages that are descendants of this page
-        products = ProductPage.objects.live().descendant_of(self)
-
-        # Order by most recent date first
-        products = products.order_by('order')
-
-        return products
-
-    def get_context(self, request):
-        # Get products
-        products = self.products
-
-        # Update template context
-        context = super(ProductIndexPage, self).get_context(request)
-        context['products'] = products
-        return context
-
-ProductIndexPage.content_panels = [
-    FieldPanel('title', classname="full title"),
-    FieldPanel('body', classname="full"),
-    InlinePanel(StandardIndexPage, 'related_links', label="Related links"),
-    ImageChooserPanel('header_image'),
-]
-
-ProductIndexPage.promote_panels = [
-    MultiFieldPanel(Page.promote_panels, "Common page configuration"),
-    ImageChooserPanel('feed_image'),
-]
-
-
-# Product page
-
-class ProductPageCarouselItem(Orderable, CarouselItem):
-    page = ParentalKey('website.ProductPage', related_name='carousel_items')
-
-class ProductPageRelatedLink(Orderable, RelatedLink):
-    page = ParentalKey('website.ProductPage', related_name='related_links')
-
-
-class ProductPage(Page):
-    intro = RichTextField(blank=True)
-    order = models.CharField("Order", max_length=255, blank=True)
-    logo = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
         blank=True,
@@ -565,6 +538,95 @@ class ProductPage(Page):
     indexed_fields = ('intro', )
 
     @property
+    def products(self):
+        # Get list of live product pages that are immediate children of this page
+        products = ProductPage.objects.live().child_of(self)
+
+        # Order them with the field we made
+        products = products.order_by('order')
+
+        return products
+
+    # This bit isn't working. If 'products' above got the kids of ProductIndex, 
+    # I need the grandkids for each kid available.
+    def sub_products(products):
+        sub_products = ProductPage.objects.live().child_of(products)
+        sub_products = sub_products.order_by('order')
+        return sub_products
+
+    def get_context(self, request):
+        # Get products
+        products = self.products
+        sub_products = self.sub_products
+
+        # Update template context
+        context = super(ProductIndexPage, self).get_context(request)
+        context['products'] = products
+        context['sub_products'] = sub_products
+        return context
+
+ProductIndexPage.content_panels = [
+    FieldPanel('title', classname="full title"),
+    FieldPanel('intro', classname="full"),
+    InlinePanel(StandardIndexPage, 'related_links', label="Related links"),
+    ImageChooserPanel('header_image'),
+]
+
+ProductIndexPage.promote_panels = [
+    MultiFieldPanel(Page.promote_panels, "Common page configuration"),
+    ImageChooserPanel('feed_image'),
+]
+
+
+# Product page
+
+class ProductPageFeatureItem(Orderable, FeatureItem):
+    page = ParentalKey('website.ProductPage', related_name='feature_items')
+
+class ProductPageRelatedLink(Orderable, RelatedLink):
+    page = ParentalKey('website.ProductPage', related_name='related_links')
+
+
+class ProductPage(Page):
+    order = models.CharField("Order", max_length=255, blank=True)
+    intro = models.CharField("Intro", max_length=255, blank=True)
+    body = RichTextField(blank=True)
+    key_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    header_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+
+    indexed_fields = ('intro', 'body' )
+
+    @property
+    def sub_products(self):
+        # Get list of live blog pages that are immediate children of this page
+        sub_products = ProductPage.objects.live().child_of(self)
+
+        # Order them with the field we made
+        sub_products = sub_products.order_by('order')
+
+        return sub_products
+
+    def get_context(self, request):
+        # Get products
+        sub_products = self.sub_products
+
+        # Update template context
+        context = super(ProductPage, self).get_context(request)
+        context['sub_products'] = sub_products
+        return context
+
     def product_index(self):
         # Find closest ancestor which is a product index
         return self.get_ancestors().type(ProductIndexPage).last()
@@ -573,14 +635,15 @@ ProductPage.content_panels = [
     FieldPanel('title', classname="full title"),
     FieldPanel('intro', classname="full"),
     FieldPanel('order'),
-    ImageChooserPanel('logo'),
-    InlinePanel(ProductPage, 'carousel_items', label="Screenshots"),
+    FieldPanel('body', classname="full"),
+    ImageChooserPanel('key_image'),
+    ImageChooserPanel('header_image'),
+    InlinePanel(ProductPage, 'feature_items', label="Features/Screenshots"),
     InlinePanel(ProductPage, 'related_links', label="Related links"),
 ]
 
 ProductPage.promote_panels = [
     MultiFieldPanel(Page.promote_panels, "Common page configuration"),
-    ImageChooserPanel('feed_image'),
 ]
 
 

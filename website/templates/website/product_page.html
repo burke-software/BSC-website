@@ -23,5 +23,10 @@
         <img src="{{ photo.url }}" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}" class="img-thumbnail" />
     {% endif %}
 
+     {% for sub_product in sub_products %}
+        aa
+            {{ sub_product.title }}
+        {% endfor %}
+
     {% include "website/includes/related_links.html" with related_links=self.related_links.all only %}
 {% endblock %}
