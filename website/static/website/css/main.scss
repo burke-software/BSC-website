@@ -183,6 +183,38 @@ h3 {
 	}
 }
 
+.media.products {
+	margin: 12px 0;
+
+	h4 {
+		font-size: 2em;
+		margin-top: 7px;
+	}
+
+	em {
+		font-size: 1.25em;
+	}
+
+	.product-key-image {
+		width: 20%;
+		margin-right: 20px;
+	}
+}
+
+.media.products.products-index-page {
+	margin: 25px 0;
+
+	.product-key-image {
+		width: auto;
+		margin-right: 40px;
+	}
+
+	.media-body {
+		font-size: 18px;
+		line-height: 28px;
+	}
+}
+
 
 .content-header {
 	background-color: transparent;

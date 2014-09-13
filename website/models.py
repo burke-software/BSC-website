@@ -547,22 +547,13 @@ class ProductIndexPage(Page):
 
         return products
 
-    # This bit isn't working. If 'products' above got the kids of ProductIndex, 
-    # I need the grandkids for each kid available.
-    def sub_products(products):
-        sub_products = ProductPage.objects.live().child_of(products)
-        sub_products = sub_products.order_by('order')
-        return sub_products
-
     def get_context(self, request):
         # Get products
         products = self.products
-        sub_products = self.sub_products
 
         # Update template context
         context = super(ProductIndexPage, self).get_context(request)
         context['products'] = products
-        context['sub_products'] = sub_products
         return context
 
 ProductIndexPage.content_panels = [
@@ -631,6 +622,14 @@ class ProductPage(Page):
         # Find closest ancestor which is a product index
         return self.get_ancestors().type(ProductIndexPage).last()
 
+    def get_product_index(self):
+        get_product_index_page = None
+        for index_page in ProductIndexPage.objects.all():
+            if self in index_page.products:
+                get_product_index_page = index_page
+                return get_product_index_page
+        return get_product_index_page
+
 ProductPage.content_panels = [
     FieldPanel('title', classname="full title"),
     FieldPanel('intro', classname="full"),
@@ -644,192 +643,6 @@ ProductPage.content_panels = [
 
 ProductPage.promote_panels = [
     MultiFieldPanel(Page.promote_panels, "Common page configuration"),
-]
-
-
-# Contact page
-
-class ContactPage(Page, ContactFields):
-    body = RichTextField(blank=True)
-    feed_image = models.ForeignKey(
-        'wagtailimages.Image',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+'
-    )
-
-    indexed_fields = ('body', )
-
-ContactPage.content_panels = [
-    FieldPanel('title', classname="full title"),
-    FieldPanel('body', classname="full"),
-    MultiFieldPanel(ContactFields.panels, "Contact"),
-]
-
-ContactPage.promote_panels = [
-    MultiFieldPanel(Page.promote_panels, "Common page configuration"),
-    ImageChooserPanel('feed_image'),
-]
-
-
-# Event index page
-
-class EventIndexPageRelatedLink(Orderable, RelatedLink):
-    page = ParentalKey('website.EventIndexPage', related_name='related_links')
-
-
-class EventIndexPage(Page):
-    intro = RichTextField(blank=True)
-
-    indexed_fields = ('intro', )
-
-    @property
-    def events(self):
-        # Get list of live event pages that are descendants of this page
-        events = EventPage.objects.live().descendant_of(self)
-
-        # Filter events list to get ones that are either
-        # running now or start in the future
-        events = events.filter(date_from__gte=date.today())
-
-        # Order by date
-        events = events.order_by('date_from')
-
-        return events
-
-EventIndexPage.content_panels = [
-    FieldPanel('title', classname="full title"),
-    FieldPanel('intro', classname="full"),
-    InlinePanel(EventIndexPage, 'related_links', label="Related links"),
-]
-
-EventIndexPage.promote_panels = [
-    MultiFieldPanel(Page.promote_panels, "Common page configuration"),
-]
-
-
-# Event page
-
-class EventPageCarouselItem(Orderable, CarouselItem):
-    page = ParentalKey('website.EventPage', related_name='carousel_items')
-
-
-class EventPageRelatedLink(Orderable, RelatedLink):
-    page = ParentalKey('website.EventPage', related_name='related_links')
-
-
-class EventPageSpeaker(Orderable, LinkFields):
-    page = ParentalKey('website.EventPage', related_name='speakers')
-    first_name = models.CharField("Name", max_length=255, blank=True)
-    last_name = models.CharField("Surname", max_length=255, blank=True)
-    image = models.ForeignKey(
-        'wagtailimages.Image',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+'
-    )
-
-    @property
-    def name_display(self):
-        return self.first_name + " " + self.last_name
-
-    panels = [
-        FieldPanel('first_name'),
-        FieldPanel('last_name'),
-        ImageChooserPanel('image'),
-        MultiFieldPanel(LinkFields.panels, "Link"),
-    ]
-
-
-class EventPage(Page):
-    date_from = models.DateField("Start date")
-    date_to = models.DateField(
-        "End date",
-        null=True,
-        blank=True,
-        help_text="Not required if event is on a single day"
-    )
-    time_from = models.TimeField("Start time", null=True, blank=True)
-    time_to = models.TimeField("End time", null=True, blank=True)
-    audience = models.CharField(max_length=255, choices=EVENT_AUDIENCE_CHOICES)
-    location = models.CharField(max_length=255)
-    body = RichTextField(blank=True)
-    cost = models.CharField(max_length=255)
-    signup_link = models.URLField(blank=True)
-    feed_image = models.ForeignKey(
-        'wagtailimages.Image',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+'
-    )
-
-    indexed_fields = ('get_audience_display', 'location', 'body')
-
-    @property
-    def event_index(self):
-        # Find closest ancestor which is an event index
-        return self.get_ancestors().type(EventIndexPage).last()
-
-    def serve(self, request):
-        if "format" in request.GET:
-            if request.GET['format'] == 'ical':
-                # Export to ical format
-                response = HttpResponse(
-                    export_event(self, 'ical'),
-                    content_type='text/calendar',
-                )
-                response['Content-Disposition'] = 'attachment; filename=' + self.slug + '.ics'
-                return response
-            else:
-                # Unrecognised format error
-                message = 'Could not export event\n\nUnrecognised format: ' + request.GET['format']
-                return HttpResponse(message, content_type='text/plain')
-        else:
-            # Display event page as usual
-            return super(EventPage, self).serve(request)
-
-EventPage.content_panels = [
-    FieldPanel('title', classname="full title"),
-    FieldPanel('date_from'),
-    FieldPanel('date_to'),
-    FieldPanel('time_from'),
-    FieldPanel('time_to'),
-    FieldPanel('location'),
-    FieldPanel('audience'),
-    FieldPanel('cost'),
-    FieldPanel('signup_link'),
-    InlinePanel(EventPage, 'carousel_items', label="Carousel items"),
-    FieldPanel('body', classname="full"),
-    InlinePanel(EventPage, 'speakers', label="Speakers"),
-    InlinePanel(EventPage, 'related_links', label="Related links"),
-]
-
-EventPage.promote_panels = [
-    MultiFieldPanel(Page.promote_panels, "Common page configuration"),
-    ImageChooserPanel('feed_image'),
-]
-
-
-class FormField(AbstractFormField):
-    page = ParentalKey('FormPage', related_name='form_fields')
-
-class FormPage(AbstractEmailForm):
-    intro = RichTextField(blank=True)
-    thank_you_text = RichTextField(blank=True)
-
-FormPage.content_panels = [
-    FieldPanel('title', classname="full title"),
-    FieldPanel('intro', classname="full"),
-    InlinePanel(FormPage, 'form_fields', label="Form fields"),
-    FieldPanel('thank_you_text', classname="full"),
-    MultiFieldPanel([
-        FieldPanel('to_address', classname="full"),
-        FieldPanel('from_address', classname="full"),
-        FieldPanel('subject', classname="full"),
-    ], "Email")
 ]
 
 

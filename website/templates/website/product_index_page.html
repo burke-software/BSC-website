@@ -18,40 +18,31 @@
 {% block content %}
     {# Listing created with a tag - allows filtering by whether the page is live #}
     {# See also the blog index or events index where the listing is created from a method defined in models.py #}
-    {% for product in products %}
-    <div class="product-list-item">
-	    <a href="{% pageurl product %}"><h4>{{ product.title }}</h4></a>
-	    <p>{{ product.intro }}</p>
-	    <p>{{ product.body|safe }}</p>
-	    
-	    {% for sub_product in sub_products %}
-	    aa
-	    	{{ sub_product.title }}
-        {% endfor %}
+    <div class="row">
+    {% for main_product in products %}
+        <div class="col-sm-12">
+            <div class="media products products-index-page">
+                {% if main_product.key_image %}
+                <a class="product-key-image pull-left" href="{% pageurl main_product %}">
+                    {% image main_product.key_image fill-200x200 class="media-object img-responsive" %}
+                </a>
+                {% endif %}
+            
+                <div class="media-body">
+                    <a href="{% pageurl main_product %}"><h4>{{ main_product.title }}</h4></a>
+                    <p>{{ main_product.intro }}</p>
 
-	    <div class="row">
-		    {% for feature in product.feature_items.all %}
-            {% image feature.image width-600 as feature_data %}
-	        <div class="col-md-4">
-		        <div class="image">
-		            <a href="{{ feature_data.url }}">
-		                {% if feature.embed_url %}
-		                    {# Embedded video - requires an embedly key to be stored in wagtailwebsite/settings/local.py #}
-		                    {{ feature.embed_url|embed:1000 }}
-		                {% else %}
-		                    {# Carousel image - first store image as a variable in order to construct an image tag with a title applied (title is used by bxslider js to construct the caption) #}
-		                    <img class="img-responsive" src="{{ feature_data.url }}" width="{{ feature_data.width }}" height="{{ feature_data.height }}" alt="{{ feature_data.alt }}" title="{{ feature.caption }}" />
-							<div class="caption">
-								<p>{{ feature.caption }}</p>
-							</div>
-		                {% endif %}
-		            </a>
-		        </div>
-	        </div>
-	        {% endfor %}
-	    </div>
-    </div>
+				    {% for sub_product in main_product.sub_products %}
+				    	{{ sub_product.title }}
+			        {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        </div><div class="row">
+
 	{% empty %}
 	    No products found
-	{% endfor %}
+    {% endfor %}
+    </div>
 {% endblock %}

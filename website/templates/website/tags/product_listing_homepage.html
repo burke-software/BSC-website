@@ -1,0 +1,31 @@
+{% if products %}
+{% load wagtailcore_tags image_tags %}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="page-header"><h3>Products and Solutions</h3></div>
+        <div class="row">
+            {% for product in products %}
+                {% for main_product in product.products %}
+                    <div class="col-sm-6">
+                        <div class="media products">
+                            {% if main_product.key_image %}
+                            <a class="product-key-image pull-left" href="{% pageurl main_product %}">
+                                {% image main_product.key_image fill-200x200 class="media-object img-responsive" %}
+                            </a>
+                            {% endif %}
+                        
+                            <div class="media-body">
+                                <a href="{% pageurl main_product %}"><h4>{{ main_product.title }}</h4></a>
+                                <p>{{ main_product.intro }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% if forloop.counter|divisibleby:2 %}
+                    </div><div class="row">
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}

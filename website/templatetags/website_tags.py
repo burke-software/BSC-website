@@ -100,6 +100,28 @@ def standard_index_listing(context, calling_page):
     }
 
 
+# Product feed for home page
+@register.inclusion_tag(
+    'website/tags/product_listing_homepage.html',
+    takes_context=True
+)
+def product_listing_homepage(context, count=20):
+    # product_index_page = ProductIndexPage.objects
+    
+    # products = ProductPage.objects.child_of(product_index_page)
+    # products = ProductPage.objects
+    # products = products.live().public()
+    # products = products.order_by('order')
+
+    products = ProductIndexPage.objects.live().public()
+    
+    return {
+        'products': products[:count],
+        # required by the pageurl tag that we want to use within this template
+        'request': context['request'],
+    }
+
+
 # Person feed for home page
 @register.inclusion_tag(
     'website/tags/person_listing_homepage.html',

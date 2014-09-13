@@ -1,32 +1,64 @@
 {% extends "website/base.html" %}
-{% load image_tags %}
+{% load pageurl wagtailimages_tags website_tags embed_filters static %}
 
 {% block hero_cover %}
-    {% image self.product_index.header_image width-2000 as heroimagedata %}
+    {% if self.header_image %}
+        {% image self.header_image width-2000 as heroimagedata %}
+    {% else %}
+        {% image self.get_product_index.header_image width-2000 as heroimagedata %}
+    {% endif %}
     <div class="content-header" style="background-image: url('{{ heroimagedata.url }}');">
         <div class="container">
             <div>
-                <h2>{{ self.product_index }}</h2>
+                <h2 class="has-intro-text">{{ self.product_index.title }}</h2><br />
+                <p>{{ self.title }}</p>
             </div>
         </div>
     </div>
 {% endblock %}
 
 {% block content %}
-    {% include "website/includes/carousel.html" with carousel_items=self.carousel_items.all only %}
 
-    {% include "website/includes/intro.html" with intro=self.intro only %}
+    {{ self.body|safe }}
 
-    {% if self.image %}
-        {# Person image - first store image as a variable in order to construct an image tag with a class applied #}
-        {% image self.image width-300 as photo %}
-        <img src="{{ photo.url }}" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}" class="img-thumbnail" />
+    {% if feature_items %}
+        <ul class="bxslider">
+            {% for feature_item in feature_items %}
+                <li>
+                    <a href="{{ feature_item.link }}">
+                        {% if feature_item.embed_url %}
+                            {# Embedded video - requires an embedly key to be stored in wagtailwebsite/settings/local.py #}
+                            {{ feature_item.embed_url|embed:1000 }}
+                        {% else %}
+                            {# Carousel image - first store image as a variable in order to construct an image tag with a title applied (title is used by bxslider js to construct the caption) #}
+                            {% image feature_item.image width-1000 as carouselimagedata %}
+                            <img src="{{ carouselimagedata.url }}" width="{{ carouselimagedata.width }}" height="{{ carouselimagedata.height }}" alt="{{ carouselimagedata.alt }}" title="{{ feature_item.caption }}" />
+                        {% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
     {% endif %}
 
-     {% for sub_product in sub_products %}
-        aa
-            {{ sub_product.title }}
-        {% endfor %}
+    {% for sub_product in sub_products %}
+        <div class="col-sm-6">
+            <div class="media products">
+                {% if sub_product.key_image %}
+                <a class="product-key-image pull-left" href="{% pageurl sub_product %}">
+                    {% image sub_product.key_image fill-200x200 class="media-object img-responsive" %}
+                </a>
+                {% endif %}
+            
+                <div class="media-body">
+                    <a href="{% pageurl sub_product %}"><h4>{{ sub_product.title }}</h4></a>
+                    <p>{{ sub_product.intro }}</p>
+                </div>
+            </div>
+        </div>
+        {% if forloop.counter|divisibleby:2 %}
+        </div><div class="row">
+        {% endif %}
+    {% endfor %}
 
     {% include "website/includes/related_links.html" with related_links=self.related_links.all only %}
 {% endblock %}
