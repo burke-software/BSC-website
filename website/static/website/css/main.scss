@@ -196,8 +196,12 @@ h3 {
 	}
 
 	.product-key-image {
-		width: 20%;
+		width: 25%;
 		margin-right: 20px;
+
+		img {
+			border: 1px solid #aaa;
+		}
 	}
 }
 
@@ -278,7 +282,11 @@ h3 {
 	}
 }
 
-.home-blog-list-item, .blog-index-list-item, .blog-index-latest-item {
+.sub-product-list {
+	margin-bottom: 50px;
+}
+
+.home-blog-list-item, .blog-index-list-item, .blog-index-latest-item, .sub-product-list .media-body {
 	margin-bottom: 50px;
 
 	h4 {
@@ -296,6 +304,10 @@ h3 {
 		font-style: italic;
 		margin-bottom: 15px;
 	}
+}
+
+.sub-product-list .media-body {
+	margin-bottom: 10px;
 }
 
 .blog-index-latest-item {
@@ -324,10 +336,10 @@ h3 {
 	margin-bottom: 20px;
 }
 
-.blog-page-body {
+.blog-page-body, .product-body {
 	font-size: 24px;
 	line-height: 36px;
-	margin-bottom: 50px;
+	margin-bottom: 20px;
 }
 
 /* Footer */

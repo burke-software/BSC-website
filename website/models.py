@@ -196,10 +196,8 @@ register_snippet(Advert)
 class HomePageCarouselItem(Orderable, CarouselItem):
     page = ParentalKey('website.HomePage', related_name='carousel_items')
 
-
 class HomePageRelatedLink(Orderable, RelatedLink):
     page = ParentalKey('website.HomePage', related_name='related_links')
-
 
 class HomePage(Page):
     body = RichTextField(blank=True)
@@ -576,7 +574,6 @@ class ProductPageFeatureItem(Orderable, FeatureItem):
 
 class ProductPageRelatedLink(Orderable, RelatedLink):
     page = ParentalKey('website.ProductPage', related_name='related_links')
-
 
 class ProductPage(Page):
     order = models.CharField("Order", max_length=255, blank=True)
