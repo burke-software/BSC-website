@@ -23,10 +23,10 @@
         {{ self.body|safe }}
     </div>
 
-    {% if feature_items %}
+    {% if self.feature_items %}
     aaa
         <ul class="bxslider">
-            {% for feature_item in feature_items %}
+            {% for feature_item in self.feature_items.all %}
                 <li>
                     <a href="{{ feature_item.link }}">
                         {% if feature_item.embed_url %}
