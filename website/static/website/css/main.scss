@@ -18,7 +18,7 @@ body {
 .navbar-default {
 	background-image: none;
 	background-color: #ffffff;
-	background-color: rgba(255,255,255,0.8);
+	background-color: rgba(255,255,255,0.9);
 	border-color: transparent;
 }
 
@@ -403,12 +403,22 @@ h3 {
 }
 
 .feature-item-list {
+	margin-top: 30px;
+	border-top: 1px solid #aaa;
+
 	.row {
 		margin-top: 30px;
 		margin-bottom: 30px;
+		padding-bottom: 30px;
+		border-bottom: 1px solid #aaa;
+	}
+
+	.caption-column {
+		margin-bottom: 10px;
 	}
 
 	h4, .feature-short-caption-no-title, .feature-short-caption-with-long-no-title {
+		margin-top: 0;
 		font-size: 24px;
 		line-height: 36px;
 	}
@@ -424,7 +434,6 @@ h3 {
 		font-size: 18px;
 		line-height: 28px;
 	}
-
 }
 
 /* Footer */

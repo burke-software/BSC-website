@@ -27,7 +27,13 @@
         <div class="feature-item-list">
             {% for feature_item in self.feature_items.all %}
             <div class="row">
-                <div class="col-sm-6">
+                {% if feature_item.long_caption %}
+                <div class="col-xs-12 col-md-6 caption-column">
+                {% elif feature_item.short_caption %}
+                <div class="col-xs-12 col-md-4 caption-column">
+                {% else %}
+                <div class="col-xs-12 caption-column">
+                {% endif %}
                     
                     {% if feature_item.long_caption %}
                         {% if feature_item.optional_title %}
@@ -45,7 +51,7 @@
                         </div>
                     {% else %}
                         {% if feature_item.optional_title %}
-                        <h4>{{ feature_item.optional_title }}</h4>
+                        <h4{% if not feature_item.short_caption and not feature_item.long_caption %} class="text-center"{% endif %}>{{ feature_item.optional_title }}</h4>
                         {% endif %}
                         {% if feature_item.short_caption %}
                         <div class="feature-short-caption{% if not feature_item.optional_title %}-no-title{% endif %}">
@@ -54,9 +60,17 @@
                         {% endif %}
                     {% endif %}
                 </div>
-                <div class="col-sm-6">
-                    <a href="{{ feature_item.link }}">
-                        {% image feature_item.image width-500 %}
+
+                {% if feature_item.long_caption %}
+                <div class="col-xs-12 col-md-6">
+                {% elif feature_item.short_caption %}
+                <div class="col-xs-12 col-md-8">
+                {% else %}
+                <div class="col-xs-12 col-lg-10 col-lg-offset-1">
+                {% endif %}
+                    {% image feature_item.image width-1000 as feature_image_data  %}
+                    <a href="{% if feature_item.link %}{{ feature_item.link }}{% else %}{{ feature_image_data.url }}{% endif %}">
+                        <img src="{{ feature_image_data.url }}" width="{{ feature_image_data.width }}" height="{{ feature_image_data.height }}" alt="{{ feature_image_data.alt }}" class="img-responsive">
                     </a>
                 </div>
             </div>
