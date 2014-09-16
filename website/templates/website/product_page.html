@@ -90,7 +90,7 @@
                     {% endif %}
                 
                     <div class="media-body">
-                        <a href="{% pageurl sub_product %}"><h4>{{ sub_product.title }}</h4></a>
+                        <a href="{% if sub_product.divert_to_external_url %}{{ sub_product.divert_to_external_url }}{% else %}{% pageurl sub_product %}{% endif %}"><h4>{{ sub_product.title }}</h4></a>
                         <p>{{ sub_product.intro }}</p>
                     </div>
                 </div>

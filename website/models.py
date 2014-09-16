@@ -575,6 +575,7 @@ class ProductPageRelatedLink(Orderable, RelatedLink):
 
 class ProductPage(Page):
     order = models.CharField("Order", max_length=255, blank=True)
+    divert_to_external_url = models.URLField("Divert to External URL", max_length=255, blank=True)
     intro = models.CharField("Intro", max_length=255, blank=True)
     body = RichTextField(blank=True)
     key_image = models.ForeignKey(
@@ -629,6 +630,7 @@ ProductPage.content_panels = [
     FieldPanel('title', classname="full title"),
     FieldPanel('intro', classname="full"),
     FieldPanel('order'),
+    FieldPanel('divert_to_external_url'),
     FieldPanel('body', classname="full"),
     ImageChooserPanel('key_image'),
     ImageChooserPanel('header_image'),
