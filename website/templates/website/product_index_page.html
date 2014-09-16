@@ -2,15 +2,15 @@
 {% load wagtailcore_tags wagtailimages_tags website_tags wagtailembeds_tags static %}
 
 {% block hero_cover %}
-	{% image self.header_image width-2000 as heroimagedata %}
+    {% image self.header_image width-2000 as heroimagedata %}
     <div class="content-header" style="background-image: url('{{ heroimagedata.url }}');">
-    	<div class="container">
-	    	<div>
-		        <h2{% if self.intro %} class="has-intro-text"{% endif %}>{{ self.title }}</h2><br />
-		        {% if self.intro %}
-		        <p>{{ self.intro|safe }}</p>
-		        {% endif %}
-	        </div>
+        <div class="container">
+            <div>
+                <h2{% if self.intro %} class="has-intro-text"{% endif %}>{{ self.title }}</h2><br />
+                {% if self.intro %}
+                <p>{{ self.intro|safe }}</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -22,27 +22,47 @@
     {% for main_product in products %}
         <div class="col-sm-12">
             <div class="media products products-index-page">
+                <a class="visible-xs" href="{% pageurl main_product %}"><h4>{{ main_product.title }}</h4></a>
                 {% if main_product.key_image %}
-                <a class="product-key-image pull-left" href="{% pageurl main_product %}">
+                <a class="product-key-image" href="{% pageurl main_product %}">
                     {% image main_product.key_image fill-200x200 class="media-object img-responsive" %}
                 </a>
                 {% endif %}
             
-                <div class="media-body">
-                    <a href="{% pageurl main_product %}"><h4>{{ main_product.title }}</h4></a>
+                <div class="main-product-title-and-intro">
+                    <a class="hidden-xs" href="{% pageurl main_product %}"><h4>{{ main_product.title }}</h4></a>
                     <p>{{ main_product.intro }}</p>
 
-				    {% for sub_product in main_product.sub_products %}
-				    	{{ sub_product.title }}
-			        {% endfor %}
+                    {% if main_product.sub_products and main_product.sub_products.count > 0 %}
+                    <div class="product-index-subproducts">
+                        <div class="row">
+                            {% for sub_product in main_product.sub_products %}
+                            <div class="col-sm-12 col-md-6">
+                                {% if sub_product.key_image %}
+                                <a class="has-image" href="{% pageurl sub_product %}">
+                                    {% image sub_product.key_image fill-200x200 %}
+                                </a>
+                                {% endif %}
+                                <div class="sub-product-title-and-intro">
+                                    <h5><a href="{% pageurl sub_product %}">{{ sub_product.title }}</a></h5>
+                                    <p>{{ sub_product.intro }}</p>
+                                </div>
+                            </div>
+                            {% if forloop.counter|divisibleby:2 %}
+                            </div><div class="row">
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
 
         </div><div class="row">
 
-	{% empty %}
-	    No products found
+    {% empty %}
+        No products found
     {% endfor %}
     </div>
 {% endblock %}

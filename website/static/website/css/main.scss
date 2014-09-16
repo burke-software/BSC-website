@@ -211,11 +211,27 @@ h3 {
 	.product-key-image {
 		width: auto;
 		margin-right: 40px;
+		float: left;
+
+		@media screen and (max-width: 767px) {
+			margin-right: 20px;
+			margin-top: 5px;
+
+			img {
+				width: 125px;
+				height: 125px;
+			}
+		}
 	}
 
-	.media-body {
+	.main-product-title-and-intro {
 		font-size: 18px;
 		line-height: 28px;
+		overflow: hidden;
+
+		@media screen and (max-width: 767px) {
+			overflow: visible;
+		}
 	}
 }
 
@@ -308,6 +324,50 @@ h3 {
 
 .sub-product-list .media-body {
 	margin-bottom: 10px;
+}
+
+.product-index-subproducts {
+	padding-top: 20px;
+	
+	@media screen and (max-width: 767px) {
+		clear: both;
+	}
+
+	> .row {
+		margin-bottom: 5px;
+	}
+
+	div.sub-product-title-and-intro {
+		float: none;
+		width: auto;
+		overflow: hidden;
+	}
+
+	h5 {
+		font-size: 18px;
+		line-height: 28px;
+		margin-top: 0;
+		margin-bottom: 3px;
+	}
+
+	p {
+		font-size: 14px;
+		line-height: 22px;
+		display: inline-block;
+	}
+
+	a.has-image {
+		float: left;
+		margin-right: 20px;
+		margin-top: 5px;
+		width: 70px;
+	}
+
+	img {
+		width: 70px;
+		height: 70px;
+		border: 1px solid #aaa;
+	}
 }
 
 .blog-index-latest-item {

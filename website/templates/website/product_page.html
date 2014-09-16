@@ -23,24 +23,21 @@
         {{ self.body|safe }}
     </div>
 
-    {% if self.feature_items %}
-    aaa
-        <ul class="bxslider">
-            {% for feature_item in self.feature_items.all %}
-                <li>
-                    <a href="{{ feature_item.link }}">
-                        {% if feature_item.embed_url %}
-                            {# Embedded video - requires an embedly key to be stored in wagtailwebsite/settings/local.py #}
-                            {{ feature_item.embed_url|embed:1000 }}
-                        {% else %}
-                            {# Carousel image - first store image as a variable in order to construct an image tag with a title applied (title is used by bxslider js to construct the caption) #}
-                            {% image feature_item.image width-1000 as feature_image_data %}
-                            <img src="{{ feature_image_data.url }}" width="{{ feature_image_data.width }}" height="{{ feature_image_data.height }}" alt="{{ feature_image_data.alt }}" title="{{ feature_item.caption }}" />
-                        {% endif %}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
+    {% if self.feature_items and self.feature_items.count > 0 %}
+        <div class="feature-item-list">
+        {% for feature_item in self.feature_items.all %}
+            <a href="{{ feature_item.link }}">
+                {% if feature_item.embed_url %}
+                    {# Embedded video - requires an embedly key to be stored in wagtailwebsite/settings/local.py #}
+                    {{ feature_item.embed_url|embed:1000 }}
+                {% else %}
+                    {# Carousel image - first store image as a variable in order to construct an image tag with a title applied (title is used by bxslider js to construct the caption) #}
+                    {% image feature_item.image width-1000 as feature_image_data %}
+                    <img src="{{ feature_image_data.url }}" width="{{ feature_image_data.width }}" height="{{ feature_image_data.height }}" alt="{{ feature_image_data.alt }}" title="{{ feature_item.caption }}" />
+                {% endif %}
+            </a>
+        {% endfor %}
+        </div>
     {% endif %}
 
     <div class="sub-product-list">
