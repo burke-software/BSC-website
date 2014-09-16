@@ -39,7 +39,7 @@
                             {% for sub_product in main_product.sub_products %}
                             <div class="col-sm-12 col-md-6">
                                 {% if sub_product.key_image %}
-                                <a class="has-image" href="{% pageurl sub_product %}">
+                                <a class="has-image" href="{% if sub_product.divert_to_external_url %}{{ sub_product.divert_to_external_url }}{% else %}{% pageurl sub_product %}{% endif %}">
                                     {% image sub_product.key_image fill-200x200 %}
                                 </a>
                                 {% endif %}
