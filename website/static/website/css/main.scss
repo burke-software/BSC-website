@@ -402,6 +402,31 @@ h3 {
 	margin-bottom: 20px;
 }
 
+.feature-item-list {
+	.row {
+		margin-top: 30px;
+		margin-bottom: 30px;
+	}
+
+	h4, .feature-short-caption-no-title, .feature-short-caption-with-long-no-title {
+		font-size: 24px;
+		line-height: 36px;
+	}
+
+	.feature-short-caption-with-long {
+		font-size: 18px;
+		line-height: 28px;
+		font-style: italic;
+		margin-bottom: 20px;
+	}
+
+	.feature-short-caption, .feature-long-caption {
+		font-size: 18px;
+		line-height: 28px;
+	}
+
+}
+
 /* Footer */
 footer#main-footer {
 	min-height: 200px;

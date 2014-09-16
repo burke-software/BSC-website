@@ -131,7 +131,6 @@ class FeatureItem(LinkFields):
         on_delete=models.SET_NULL,
         related_name='+'
     )
-    embed_url = models.URLField("Embed URL", blank=True)
     optional_title = models.CharField(max_length=255, blank=True)
     short_caption = models.CharField(max_length=255, blank=True)
     long_caption = RichTextField(blank=True)
@@ -142,7 +141,6 @@ class FeatureItem(LinkFields):
         FieldPanel('optional_title'),
         FieldPanel('short_caption'),
         FieldPanel('long_caption'),
-        FieldPanel('embed_url'),
         MultiFieldPanel(LinkFields.panels, "Link"),
     ]
 

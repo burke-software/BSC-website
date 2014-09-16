@@ -25,22 +25,42 @@
 
     {% if self.feature_items and self.feature_items.count > 0 %}
         <div class="feature-item-list">
-        {% for feature_item in self.feature_items.all %}
-            <a href="{{ feature_item.link }}">
-                {% if feature_item.embed_url %}
-                    {# Embedded video - requires an embedly key to be stored in wagtailwebsite/settings/local.py #}
-                    {{ feature_item.embed_url|embed:1000 }}
-                {% else %}
-                    {% image feature_item.image width-1000 %}
-                {% endif %}
-            </a>
-            <div class="feature-item-short-caption">
-                {{ feature_item.short_caption }}
+            {% for feature_item in self.feature_items.all %}
+            <div class="row">
+                <div class="col-sm-6">
+                    
+                    {% if feature_item.long_caption %}
+                        {% if feature_item.optional_title %}
+                        <h4>
+                            {{ feature_item.optional_title }}
+                        </h4>
+                        {% endif %}
+                        {% if feature_item.short_caption %}
+                        <div class="feature-short-caption-with-long{% if not feature_item.optional_title %}-no-title{% endif %}">
+                            {{ feature_item.short_caption }}
+                        </div>
+                        {% endif %}
+                        <div class="feature-long-caption">
+                            {{ feature_item.long_caption|richtext }}
+                        </div>
+                    {% else %}
+                        {% if feature_item.optional_title %}
+                        <h4>{{ feature_item.optional_title }}</h4>
+                        {% endif %}
+                        {% if feature_item.short_caption %}
+                        <div class="feature-short-caption{% if not feature_item.optional_title %}-no-title{% endif %}">
+                            {{ feature_item.short_caption }}
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="col-sm-6">
+                    <a href="{{ feature_item.link }}">
+                        {% image feature_item.image width-500 %}
+                    </a>
+                </div>
             </div>
-            <div class="feature-item-long-caption">
-                {{ feature_item.long_caption|richtext }}
-            </div>
-        {% endfor %}
+            {% endfor %}
         </div>
     {% endif %}
 
