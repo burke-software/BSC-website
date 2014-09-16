@@ -132,12 +132,14 @@ class FeatureItem(LinkFields):
         related_name='+'
     )
     embed_url = models.URLField("Embed URL", blank=True)
+    optional_title = models.CharField(max_length=255, blank=True)
     short_caption = models.CharField(max_length=255, blank=True)
     long_caption = RichTextField(blank=True)
 
     panels = [
         ImageChooserPanel('image'),
         ImageChooserPanel('image_thumbnail'),
+        FieldPanel('optional_title'),
         FieldPanel('short_caption'),
         FieldPanel('long_caption'),
         FieldPanel('embed_url'),

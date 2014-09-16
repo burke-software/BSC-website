@@ -31,11 +31,15 @@
                     {# Embedded video - requires an embedly key to be stored in wagtailwebsite/settings/local.py #}
                     {{ feature_item.embed_url|embed:1000 }}
                 {% else %}
-                    {# Carousel image - first store image as a variable in order to construct an image tag with a title applied (title is used by bxslider js to construct the caption) #}
-                    {% image feature_item.image width-1000 as feature_image_data %}
-                    <img src="{{ feature_image_data.url }}" width="{{ feature_image_data.width }}" height="{{ feature_image_data.height }}" alt="{{ feature_image_data.alt }}" title="{{ feature_item.caption }}" />
+                    {% image feature_item.image width-1000 %}
                 {% endif %}
             </a>
+            <div class="feature-item-short-caption">
+                {{ feature_item.short_caption }}
+            </div>
+            <div class="feature-item-long-caption">
+                {{ feature_item.long_caption|richtext }}
+            </div>
         {% endfor %}
         </div>
     {% endif %}
