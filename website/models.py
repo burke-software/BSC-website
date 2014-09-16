@@ -473,7 +473,6 @@ class PersonPage(Page, ContactFields):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     job_title = models.CharField(max_length=255)
-    intro = RichTextField(blank=True)
     biography = RichTextField(blank=True)
     image = models.ForeignKey(
         'wagtailimages.Image',
@@ -490,14 +489,13 @@ class PersonPage(Page, ContactFields):
         related_name='+'
     )
 
-    indexed_fields = ('first_name', 'last_name', 'intro', 'biography')
+    indexed_fields = ('first_name', 'last_name', 'job_title', 'biography')
 
 PersonPage.content_panels = [
     FieldPanel('title', classname="full title"),
     FieldPanel('first_name'),
     FieldPanel('last_name'),
     FieldPanel('job_title'),
-    FieldPanel('intro', classname="full"),
     FieldPanel('biography', classname="full"),
     ImageChooserPanel('image'),
     MultiFieldPanel(ContactFields.panels, "Contact"),
