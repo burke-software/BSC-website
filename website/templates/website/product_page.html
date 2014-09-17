@@ -27,7 +27,7 @@
         <div class="feature-item-list">
             {% for feature_item in self.feature_items.all %}
             <div class="row">
-                {% if feature_item.long_caption %}
+                {% if feature_item.long_caption and not feature_item.long_caption|striptags == "" %}
                 <div class="col-xs-12 col-md-6 caption-column">
                 {% elif feature_item.short_caption %}
                 <div class="col-xs-12 col-md-4 caption-column">
@@ -35,7 +35,8 @@
                 <div class="col-xs-12 caption-column">
                 {% endif %}
                     
-                    {% if feature_item.long_caption %}
+                    {# if feature_item.long_caption #}
+                    {% if feature_item.long_caption and not feature_item.long_caption|striptags == "" %}
                         {% if feature_item.optional_title %}
                         <h4>
                             {{ feature_item.optional_title }}
@@ -51,7 +52,7 @@
                         </div>
                     {% else %}
                         {% if feature_item.optional_title %}
-                        <h4{% if not feature_item.short_caption and not feature_item.long_caption %} class="text-center"{% endif %}>{{ feature_item.optional_title }}</h4>
+                        <h4{% if not feature_item.short_caption and not feature_item.long_caption or feature_item.long_caption|striptags == "" %} class="text-center"{% endif %}>{{ feature_item.optional_title }}</h4>
                         {% endif %}
                         {% if feature_item.short_caption %}
                         <div class="feature-short-caption{% if not feature_item.optional_title %}-no-title{% endif %}">
@@ -61,7 +62,7 @@
                     {% endif %}
                 </div>
 
-                {% if feature_item.long_caption %}
+                {% if feature_item.long_caption and not feature_item.long_caption|striptags == "" %}
                 <div class="col-xs-12 col-md-6">
                 {% elif feature_item.short_caption %}
                 <div class="col-xs-12 col-md-8">
