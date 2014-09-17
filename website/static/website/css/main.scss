@@ -322,8 +322,12 @@ h3 {
 	}
 }
 
-.product-index-list-item, .sub-product-list .media-body {
+.sub-product-list .media-body {
 	margin-bottom: 10px;
+}
+
+.product-index-list-item {
+	margin-bottom: 0;
 }
 
 .product-index-subproducts {
