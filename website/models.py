@@ -131,16 +131,16 @@ class FeatureItem(LinkFields):
         on_delete=models.SET_NULL,
         related_name='+'
     )
-    embed_url = models.URLField("Embed URL", blank=True)
+    optional_title = models.CharField(max_length=255, blank=True)
     short_caption = models.CharField(max_length=255, blank=True)
     long_caption = RichTextField(blank=True)
 
     panels = [
         ImageChooserPanel('image'),
         ImageChooserPanel('image_thumbnail'),
+        FieldPanel('optional_title'),
         FieldPanel('short_caption'),
         FieldPanel('long_caption'),
-        FieldPanel('embed_url'),
         MultiFieldPanel(LinkFields.panels, "Link"),
     ]
 
@@ -473,7 +473,6 @@ class PersonPage(Page, ContactFields):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     job_title = models.CharField(max_length=255)
-    intro = RichTextField(blank=True)
     biography = RichTextField(blank=True)
     image = models.ForeignKey(
         'wagtailimages.Image',
@@ -490,14 +489,13 @@ class PersonPage(Page, ContactFields):
         related_name='+'
     )
 
-    indexed_fields = ('first_name', 'last_name', 'intro', 'biography')
+    indexed_fields = ('first_name', 'last_name', 'job_title', 'biography')
 
 PersonPage.content_panels = [
     FieldPanel('title', classname="full title"),
     FieldPanel('first_name'),
     FieldPanel('last_name'),
     FieldPanel('job_title'),
-    FieldPanel('intro', classname="full"),
     FieldPanel('biography', classname="full"),
     ImageChooserPanel('image'),
     MultiFieldPanel(ContactFields.panels, "Contact"),
@@ -577,6 +575,7 @@ class ProductPageRelatedLink(Orderable, RelatedLink):
 
 class ProductPage(Page):
     order = models.CharField("Order", max_length=255, blank=True)
+    divert_to_external_url = models.URLField("Divert to External URL", max_length=255, blank=True)
     intro = models.CharField("Intro", max_length=255, blank=True)
     body = RichTextField(blank=True)
     key_image = models.ForeignKey(
@@ -631,6 +630,7 @@ ProductPage.content_panels = [
     FieldPanel('title', classname="full title"),
     FieldPanel('intro', classname="full"),
     FieldPanel('order'),
+    FieldPanel('divert_to_external_url'),
     FieldPanel('body', classname="full"),
     ImageChooserPanel('key_image'),
     ImageChooserPanel('header_image'),

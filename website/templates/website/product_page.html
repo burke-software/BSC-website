@@ -20,27 +20,65 @@
 {% block content %}
 
     <div class="product-body">
-        {{ self.body|safe }}
+        {{ self.body|richtext }}
     </div>
 
-    {% if self.feature_items %}
-    aaa
-        <ul class="bxslider">
+    {% if self.feature_items and self.feature_items.count > 0 %}
+        <div class="feature-item-list">
             {% for feature_item in self.feature_items.all %}
-                <li>
-                    <a href="{{ feature_item.link }}">
-                        {% if feature_item.embed_url %}
-                            {# Embedded video - requires an embedly key to be stored in wagtailwebsite/settings/local.py #}
-                            {{ feature_item.embed_url|embed:1000 }}
-                        {% else %}
-                            {# Carousel image - first store image as a variable in order to construct an image tag with a title applied (title is used by bxslider js to construct the caption) #}
-                            {% image feature_item.image width-1000 as feature_image_data %}
-                            <img src="{{ feature_image_data.url }}" width="{{ feature_image_data.width }}" height="{{ feature_image_data.height }}" alt="{{ feature_image_data.alt }}" title="{{ feature_item.caption }}" />
+            <div class="row">
+                {% if feature_item.long_caption and not feature_item.long_caption|striptags == "" %}
+                <div class="col-xs-12 col-md-6 caption-column">
+                {% elif feature_item.short_caption %}
+                <div class="col-xs-12 col-md-4 caption-column">
+                {% else %}
+                <div class="col-xs-12 caption-column">
+                {% endif %}
+                    
+                    {# if feature_item.long_caption #}
+                    {% if feature_item.long_caption and not feature_item.long_caption|striptags == "" %}
+                        {% if feature_item.optional_title %}
+                        <h4>
+                            {{ feature_item.optional_title }}
+                        </h4>
                         {% endif %}
-                    </a>
-                </li>
+                        {% if feature_item.short_caption %}
+                        <div class="feature-short-caption-with-long{% if not feature_item.optional_title %}-no-title{% endif %}">
+                            {{ feature_item.short_caption }}
+                        </div>
+                        {% endif %}
+                        <div class="feature-long-caption">
+                            {{ feature_item.long_caption|richtext }}
+                        </div>
+                    {% else %}
+                        {% if feature_item.optional_title %}
+                        <h4{% if not feature_item.short_caption and not feature_item.long_caption or feature_item.long_caption|striptags == "" %} class="text-center"{% endif %}>{{ feature_item.optional_title }}</h4>
+                        {% endif %}
+                        {% if feature_item.short_caption %}
+                        <div class="feature-short-caption{% if not feature_item.optional_title %}-no-title{% endif %}">
+                            {{ feature_item.short_caption }}
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+
+                {% if feature_item.image %}
+                    {% if feature_item.long_caption and not feature_item.long_caption|striptags == "" %}
+                    <div class="col-xs-12 col-md-6">
+                    {% elif feature_item.short_caption %}
+                    <div class="col-xs-12 col-md-8">
+                    {% else %}
+                    <div class="col-xs-12 col-lg-10 col-lg-offset-1">
+                    {% endif %}
+                        {% image feature_item.image width-1000 as feature_image_data  %}
+                        <a href="{% if feature_item.link %}{{ feature_item.link }}{% else %}{{ feature_image_data.url }}{% endif %}">
+                            <img src="{{ feature_image_data.url }}" width="{{ feature_image_data.width }}" height="{{ feature_image_data.height }}" alt="{{ feature_image_data.alt }}" class="img-responsive">
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
             {% endfor %}
-        </ul>
+        </div>
     {% endif %}
 
     <div class="sub-product-list">
@@ -55,7 +93,7 @@
                     {% endif %}
                 
                     <div class="media-body">
-                        <a href="{% pageurl sub_product %}"><h4>{{ sub_product.title }}</h4></a>
+                        <a href="{% if sub_product.divert_to_external_url %}{{ sub_product.divert_to_external_url }}{% else %}{% pageurl sub_product %}{% endif %}"><h4>{{ sub_product.title }}</h4></a>
                         <p>{{ sub_product.intro }}</p>
                     </div>
                 </div>

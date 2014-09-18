@@ -18,7 +18,7 @@ body {
 .navbar-default {
 	background-image: none;
 	background-color: #ffffff;
-	background-color: rgba(255,255,255,0.8);
+	background-color: rgba(255,255,255,0.9);
 	border-color: transparent;
 }
 
@@ -211,11 +211,27 @@ h3 {
 	.product-key-image {
 		width: auto;
 		margin-right: 40px;
+		float: left;
+
+		@media screen and (max-width: 767px) {
+			margin-right: 20px;
+			margin-top: 5px;
+
+			img {
+				width: 125px;
+				height: 125px;
+			}
+		}
 	}
 
-	.media-body {
+	.main-product-title-and-intro {
 		font-size: 18px;
 		line-height: 28px;
+		overflow: hidden;
+
+		@media screen and (max-width: 767px) {
+			overflow: visible;
+		}
 	}
 }
 
@@ -286,7 +302,7 @@ h3 {
 	margin-bottom: 50px;
 }
 
-.home-blog-list-item, .blog-index-list-item, .blog-index-latest-item, .sub-product-list .media-body {
+.home-blog-list-item, .blog-index-list-item, .blog-index-latest-item, .product-index-list-item, .sub-product-list .media-body {
 	margin-bottom: 50px;
 
 	h4 {
@@ -308,6 +324,54 @@ h3 {
 
 .sub-product-list .media-body {
 	margin-bottom: 10px;
+}
+
+.product-index-list-item {
+	margin-bottom: 0;
+}
+
+.product-index-subproducts {
+	padding-top: 20px;
+	
+	@media screen and (max-width: 767px) {
+		clear: both;
+	}
+
+	> .row {
+		margin-bottom: 5px;
+	}
+
+	div.sub-product-title-and-intro {
+		float: none;
+		width: auto;
+		overflow: hidden;
+	}
+
+	h5 {
+		font-size: 18px;
+		line-height: 28px;
+		margin-top: 0;
+		margin-bottom: 3px;
+	}
+
+	p {
+		font-size: 14px;
+		line-height: 22px;
+		display: inline-block;
+	}
+
+	a.has-image {
+		float: left;
+		margin-right: 20px;
+		margin-top: 5px;
+		width: 70px;
+	}
+
+	img {
+		width: 70px;
+		height: 70px;
+		border: 1px solid #aaa;
+	}
 }
 
 .blog-index-latest-item {
@@ -340,6 +404,44 @@ h3 {
 	font-size: 24px;
 	line-height: 36px;
 	margin-bottom: 20px;
+}
+
+.feature-item-list {
+	margin-top: 30px;
+	border-top: 1px solid #aaa;
+
+	.row {
+		margin-top: 30px;
+		margin-bottom: 30px;
+		padding-bottom: 30px;
+		border-bottom: 1px solid #aaa;
+	}
+
+	.caption-column {
+		margin-bottom: 10px;
+	}
+
+	h4, .feature-short-caption-no-title, .feature-short-caption-with-long-no-title {
+		margin-top: 0;
+		font-size: 24px;
+		line-height: 36px;
+	}
+
+	.feature-short-caption-with-long {
+		font-size: 18px;
+		line-height: 28px;
+		font-style: italic;
+		margin-bottom: 20px;
+	}
+
+	.feature-short-caption, .feature-long-caption {
+		font-size: 18px;
+		line-height: 28px;
+	}
+
+	img {
+		margin: 0 auto;
+	}
 }
 
 /* Footer */

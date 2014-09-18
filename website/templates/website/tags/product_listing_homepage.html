@@ -6,7 +6,7 @@
         <div class="row">
             {% for product in products %}
                 {% for main_product in product.products %}
-                    <div class="col-sm-6">
+                    <div class="col-sm-6 product-index-list-item">
                         <div class="media products">
                             {% if main_product.key_image %}
                             <a class="product-key-image pull-left" href="{% pageurl main_product %}">
