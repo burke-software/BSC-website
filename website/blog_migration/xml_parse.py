@@ -31,13 +31,13 @@ for item in soup.findAll('item'):
         tag_objects = []
         counter += 1
         if len(str(counter)) == 1:
-            the_path = '000100010001000{}'.format(str(counter))
+            the_path = '000100010003000{}'.format(str(counter))
         if len(str(counter)) == 2:
-            the_path = '00010001000100{}'.format(str(counter))
+            the_path = '00010001000300{}'.format(str(counter))
         if len(str(counter)) == 3:
-            the_path = '0001000100010{}'.format(str(counter))
+            the_path = '0001000100030{}'.format(str(counter))
         if len(str(counter)) == 4:
-            the_path = '000100010001{}'.format(str(counter))
+            the_path = '000100010003{}'.format(str(counter))
         # Create wagtail tag objects
         for tag in tags:
             try:
