@@ -34,8 +34,8 @@ for item in soup.findAll('item'):
             image_tag_text = image_tag[0]
             image_tag_src = image_tag[1]
             filename = re.findall("/([^/]*)$", image_tag_src)[0]
-            urllib.urlretrieve(image_tag_src, os.path.join(settings.MEDIA_ROOT, "images", filename))
-            new_url = settings.MEDIA_URL + 'images/' + filename
+            urllib.urlretrieve(image_tag_src, os.path.join(settings.PROJECT_ROOT, 'website/static/website/images', filename))
+            new_url = settings.STATIC_URL + 'website/images/' + filename
             body = body.replace(image_tag_src, new_url)
 
         link = item.find('link').string
