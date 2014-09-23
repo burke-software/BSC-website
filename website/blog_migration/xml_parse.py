@@ -22,6 +22,7 @@ root = tree.getroot()
 soup = BeautifulSoup(etree.tostring(root), 'xml')
 counter = 1
 keepers = 0
+
 for item in soup.findAll('item'):
     if item.find('encoded').string:
         body = item.find('encoded').string
