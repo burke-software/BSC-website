@@ -4,7 +4,10 @@ import os
 
 PROJECT_ROOT = os.path.join(os.path.dirname(__file__), '..', '..')
 
-DEBUG = True
+if 'IS_PRODUCTION' in os.environ:
+    DEBUG = False
+else:
+    DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
