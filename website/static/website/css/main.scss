@@ -168,6 +168,14 @@ a.list-group-item {
 
 h3 {
 	font-size: 3vw;
+
+	@media screen and (max-width: 767px) {
+		font-size: 5vw;
+	}
+
+	@media screen and (max-width: 480px) {
+		font-size: 7vw;
+	}
 }
 
 .media.people {
@@ -185,7 +193,15 @@ h3 {
 	.avatar {
 		width: 30%;
 		margin-right: 20px;
+		@media screen and (max-width: 767px) {
+			width: 20%;
+		}
+
+		@media screen and (max-width: 480px) {
+			width: 25%;
+		}
 	}
+
 }
 
 .media.products {
