@@ -2,23 +2,26 @@
 
 {# Individual person item in a list - used on person index #}
 <div class="media person-list-item">
-  <a name="{{ person.first_name }}" class="pull-left">
+  <a name="{{ person.first_name }}" class="person-list-item-image">
     {% if person.image %}
         {% image person.image fill-200x200 class="media-object img-responsive" %}
     {% elif person.feed_image %}
         {% image person.feed_image fill-200x200 class="media-object img-responsive" %}
     {% else %}
-        <img class="media-object img-responsive" src="http://robohash.org/{{ person.first_name }}.png?set=set3&size=200x200&bgset=2" />
+        <img class="media-object img-responsive" src="http://robohash.org/{{ person.first_name }}.png?set=set3&amp;size=200x200&amp;bgset=2" />
     {% endif %}
   </a>
   <div class="media-body">
     <h4 class="media-heading">
         {{ person.first_name }} {{ person.last_name }}<br />
         <small>{{ person.job_title }}</small>
+        {% if person.biography and person.biography|striptags != "" %}
+        <a href="javascript:void(0);" class="person-bio-trigger visible-xs">Read bio<i class="fa fa-angle-right fa-margin-left"></i></a>
+        {% endif %}
     </h4>
 
-    {% if person.biography %}
-    <p>
+    {% if person.biography and person.biography|striptags != "" %}
+    <p class="person-biography">
         {% if person.biography %}
             {{ person.biography|safe }}
         {% endif %}
