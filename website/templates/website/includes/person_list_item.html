@@ -21,11 +21,11 @@
     </h4>
 
     {% if person.biography and person.biography|striptags != "" %}
-    <p class="person-biography">
+    <div class="person-biography">
         {% if person.biography %}
             {{ person.biography|safe }}
         {% endif %}
-    </p>
+    </div>
     {% endif %}
   </div>
 </div>
