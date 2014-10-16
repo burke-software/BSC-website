@@ -24,8 +24,12 @@
                 </div>
             </div>
 
+            {% if forloop.counter|divisibleby:2 %}
+                <div class="clearfix visible-sm"></div>
+            {% endif %}
+
             {% if forloop.counter|divisibleby:3 %}
-                <div class="clearfix visible-md"></div>
+                <div class="clearfix visible-md visible-lg"></div>
             {% endif %}
         {% endfor %}
         </div>
