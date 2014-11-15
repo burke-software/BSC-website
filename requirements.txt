@@ -3,7 +3,7 @@ South>=1.0.0
 psycopg2>=2.5.2
 django-compressor>=1.4
 django-modelcluster>=0.3
-wagtail>=0.5
+wagtail==0.8.1
 django-taggit>=0.11.2
 django-libsass>=0.2
 django-celery==3.1.1

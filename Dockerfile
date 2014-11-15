@@ -1,4 +1,4 @@
-FROM python:2
+FROM python:2.7
 ENV PYTHONUNBUFFERED 1
 RUN apt-get update -qq && apt-get install -y python-psycopg2 postgresql-client libpq-dev git-core libmemcached-dev ruby-sass ruby-compass libxml2-dev libxslt1-dev python-dev libjpeg-dev
 RUN mkdir /code
