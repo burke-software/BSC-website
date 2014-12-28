@@ -11,7 +11,6 @@ django-redis-cache==0.10.2
 elasticsearch==1.0.0
 gunicorn
 Collectfast
-django-storages
+django-storages-redux
 boto
 lxml>=3.3.5
-beautifulsoup
