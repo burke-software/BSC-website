@@ -139,6 +139,7 @@ MIDDLEWARE_CLASSES = (
 from django.conf import global_settings
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     'django.core.context_processors.request',
+    "sekizai.context_processors.sekizai",
 )
 
 ROOT_URLCONF = 'bsc_website.urls'
@@ -156,16 +157,15 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    # 'django.contrib.sites',  # Wagtail uses its own site management logic
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.humanize',
 
     'compressor',
     'taggit',
     'modelcluster',
     'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
 
     'wagtail.wagtailcore',
     'wagtail.wagtailadmin',
@@ -177,6 +177,17 @@ INSTALLED_APPS = (
     'wagtail.wagtailsearch',
     'wagtail.wagtailredirects',
     'wagtail.wagtailforms',
+
+
+    'django_nyt',
+    'mptt',
+    'sekizai',
+    'sorl.thumbnail',
+    'wiki',
+    'wiki.plugins.attachments',
+    'wiki.plugins.notifications',
+    'wiki.plugins.images',
+    'wiki.plugins.macros',
 
     'website',
 )
@@ -228,6 +239,9 @@ WAGTAIL_SITE_NAME = 'Burke Software and Consulting'
 
 # Override the search results template for wagtailsearch
 WAGTAILSEARCH_RESULTS_TEMPLATE = 'website/search_results.html'
+
+
+SITE_ID = 1
 
 if os.getenv('USE_S3'):
     INSTALLED_APPS += ('storages', 'collectfast')

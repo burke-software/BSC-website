@@ -10,6 +10,9 @@ from wagtail.wagtailadmin import urls as wagtailadmin_urls
 from wagtail.wagtaildocs import urls as wagtaildocs_urls
 from wagtail.wagtailsearch.urls import frontend as wagtailsearch_frontend_urls
 
+from wiki.urls import get_pattern as get_wiki_pattern
+from django_nyt.urls import get_pattern as get_nyt_pattern
+
 admin.autodiscover()
 
 
@@ -24,6 +27,9 @@ urlpatterns = patterns('',
     url(r'^admin/', include(wagtailadmin_urls)),
     url(r'^search/', include(wagtailsearch_frontend_urls)),
     url(r'^documents/', include(wagtaildocs_urls)),
+
+    url(r'^notifications/', get_nyt_pattern()),
+    url(r'^wiki', get_wiki_pattern()),
 
     # For anything not caught by a more specific rule above, hand over to
     # Wagtail's serving mechanism
