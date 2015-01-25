@@ -268,6 +268,8 @@ WAGTAIL_SITE_NAME = 'Burke Software and Consulting'
 WAGTAILSEARCH_RESULTS_TEMPLATE = 'website/search_results.html'
 
 
+CHECK_SLUG_URL_AVAILABLE = False
+
 SITE_ID = 1
 
 if os.getenv('USE_S3'):
