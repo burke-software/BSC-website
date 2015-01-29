@@ -1,11 +1,86 @@
 {% extends "wiki/base_site.html" %}
+{% load sekizai_tags i18n wiki_tags website_tags cache compress static wagtailuserbar wagtailcore_tags %}
+{% load url from future %}
+{% get_site_root as site_root %}
 
-{% block wiki_header_branding %}
-<a class="navbar-brand" href="/">Your brand</a>
-{% endblock %}
 
-{% block wiki_header_navlinks %}
-<ul class="nav navbar-nav">
-  <li class="active"><a href="{% url 'wiki:root' %}">Wiki</a></li>
-</ul>
+{% block wiki_navbar %}
+  {% addtoblock "css" %}
+    {% compress css %}
+    <link rel="stylesheet" type="text/x-scss" href="{% static "website/css/main.scss" %}" />
+    <link rel="stylesheet" href="{% static "website/css/vendor/jquery.bxslider.css" %}" />
+    {% endcompress %}
+  {% endaddtoblock %}
+
+  <div class="navbar navbar-fixed-top navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .navbar-toggle is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a href="{% pageurl site_root %}" class="navbar-brand"><img src="{% static 'website/images/bsc-logo.svg' %}" alt="{{ site_root.title }}" /></a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <form class="navbar-form navbar-right" id="wiki-search-form" method="GET" action="{% url 'wiki:search' %}">
+          <div class="input-group">
+            <input type="search" class="form-control search-query" name="q" placeholder="{% trans "Search..." %}" />
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">
+                <span class="fa fa-search"></span>
+              </button>
+            </span>
+          </div><!-- /input-group -->
+        </form>
+        <div class="navbar-right">
+          {% if user.is_authenticated %}
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <span class="badge notification-cnt">0</span>
+                {{ user }}
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="{% url 'wiki:logout' %}">
+                    <i class="fa fa-power-off"></i>
+                    {% trans "Log out" %}
+                  </a>
+                </li>
+                {% include "wiki/plugins/notifications/menubaritem.html" %}
+              </ul>
+            </li>
+          </ul>
+          {% else %}
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="{% login_url as wiki_login_url %}{{ wiki_login_url }}">{% trans "Log in" %}</a>
+            </li>
+            <li>
+              <a href="{% url 'wiki:signup' %}">{% trans "Sign up" %}</a>
+            </li>
+          </ul>
+          {% endif %}
+        </div>
+        {% block wiki_header_navlinks %}
+        <ul class="nav navbar-nav navbar-right">
+          {% for menuitem in menuitems %}
+          <li class="{% if menuitem.show_dropdown %}dropdown{% endif %}{% if calling_page.url == menuitem.url %} active{% endif %}">
+              {% if menuitem.show_dropdown %}
+                  <a data-toggle="dropdown" class="dropdown-toggle" href="#">{{ menuitem.title }} <b class="caret"></b></a>
+                  {% top_menu_children parent=menuitem %}
+              {% else %}
+                  <a href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
+              {% endif %}
+          </li>       
+          {% endfor %}
+          <li class="active"><a href="{% url 'wiki:root' %}">Wiki</a></li>
+        </ul>
+        {% endblock %}
+      </div>
+    </div>
+  </div>
 {% endblock %}
