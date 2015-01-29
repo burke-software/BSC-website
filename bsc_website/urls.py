@@ -29,7 +29,9 @@ urlpatterns = patterns('',
     url(r'^documents/', include(wagtaildocs_urls)),
 
     url(r'^notifications/', get_nyt_pattern()),
-    url(r'^wiki', get_wiki_pattern()),
+    url(r'^wiki/', get_wiki_pattern()),
+
+    url('', include('social.apps.django_app.urls', namespace='social')),
 
     # For anything not caught by a more specific rule above, hand over to
     # Wagtail's serving mechanism

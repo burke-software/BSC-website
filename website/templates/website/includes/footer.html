@@ -18,6 +18,7 @@
         <div>Burke Software and Consulting LLC</div>
         <div>&copy; {% now "Y" %} - All Rights Reserved.</div>
         <div>Robots lovingly delivered by <a href="http://www.robohash.org">Robohash.org</a></div>
+        <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login with Google</a>
       </div>
     </div>
   </div>
