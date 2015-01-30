@@ -4,6 +4,7 @@
 
 {% block wiki_navbar %}
   {% addtoblock "css" %}
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     {% compress css %}
     <link rel="stylesheet" type="text/x-scss" href="{% static "website/css/main.scss" %}" />
     <link rel="stylesheet" href="{% static "website/css/vendor/jquery.bxslider.css" %}" />
@@ -75,9 +76,9 @@
               {% endif %}
           </li>       
           {% endfor %}
-          <li><a href="/products-and-solutions/">Products and Solutions</a></li>
-          <li><a href="/meet-the-team/">Meet the Team</a></li>
-          <li><a href="/blog/">Burke Software Blog</a></li>
+          <li class="hidden-sm"><a href="/products-and-solutions/">Products and Solutions</a></li>
+          <li class="hidden-sm"><a href="/meet-the-team/">Meet the Team</a></li>
+          <li class="hidden-sm"><a href="/blog/">Burke Software Blog</a></li>
           <li class="active"><a href="{% url 'wiki:root' %}">Wiki</a></li>
         </ul>
         {% endblock %}
