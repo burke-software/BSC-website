@@ -1,7 +1,5 @@
 {% extends "wiki/base_site.html" %}
 {% load sekizai_tags i18n wiki_tags website_tags cache compress static wagtailuserbar wagtailcore_tags %}
-{% load url from future %}
-{% get_site_root as site_root %}
 
 
 {% block wiki_navbar %}
@@ -21,7 +19,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a href="{% pageurl site_root %}" class="navbar-brand"><img src="{% static 'website/images/bsc-logo.svg' %}" alt="{{ site_root.title }}" /></a>
+        <a href="/" class="navbar-brand"><img src="{% static 'website/images/bsc-logo.svg' %}" alt="{{ site_root.title }}" /></a>
       </div>
       <div class="navbar-collapse collapse">
         <form class="navbar-form navbar-right" id="wiki-search-form" method="GET" action="{% url 'wiki:search' %}">
@@ -73,10 +71,13 @@
                   <a data-toggle="dropdown" class="dropdown-toggle" href="#">{{ menuitem.title }} <b class="caret"></b></a>
                   {% top_menu_children parent=menuitem %}
               {% else %}
-                  <a href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
+                  <a href="#">{{ menuitem.title }}</a>
               {% endif %}
           </li>       
           {% endfor %}
+          <li><a href="/products-and-solutions/">Products and Solutions</a></li>
+          <li><a href="/meet-the-team/">Meet the Team</a></li>
+          <li><a href="/blog/">Burke Software Blog</a></li>
           <li class="active"><a href="{% url 'wiki:root' %}">Wiki</a></li>
         </ul>
         {% endblock %}
