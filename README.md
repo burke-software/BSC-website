@@ -1,3 +1,5 @@
+Moved to gitlab https://gitlab.com/burke-software/BSC-website
+
 BSC-website
 ===========
 
